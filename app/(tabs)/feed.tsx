@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   feed: {
-    width: "120%",
-    marginLeft: "-10%",
+    width: "100%",
   },
 });

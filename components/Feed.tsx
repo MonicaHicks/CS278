@@ -1,6 +1,7 @@
 import React from "react";
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Event from "./Event";
 
 const DATA = [
   {
@@ -29,23 +30,13 @@ const DATA = [
   },
 ];
 
-type ItemProps = { title: string };
-
-const Item = ({ title }: ItemProps) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
 export default function Feed() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <FlatList
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={(item) => item.id}
-        />
+        {DATA.map((item) => (
+          <Event item={item} key={item.id} />
+        ))}
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -55,11 +46,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 2,
   },
   title: {
     fontSize: 32,
