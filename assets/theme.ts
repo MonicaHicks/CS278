@@ -48,6 +48,10 @@ const typography = {
     fontWeight: "600" as const,
     lineHeight: 24,
   },
+  friendEventList: {
+    fontSize: 20,
+    fontWeight: "500" as const,
+  },
   body: {
     fontSize: 16,
     fontWeight: "400" as const,
@@ -84,6 +88,12 @@ const profilePicNameContainer = {
   gap: 8,
 };
 
+const friendCard = {
+  ...cardBase,
+  marginVertical: spacing.sm,
+  gap: spacing.md,
+}
+
 const theme = {
   colors,
   typography,
@@ -94,5 +104,6 @@ const theme = {
   eventCard,
   profilePic,
   profilePicNameContainer,
+  friendCard
 };
 export default theme;
