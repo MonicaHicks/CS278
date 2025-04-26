@@ -1,4 +1,4 @@
-import { Image, StyleSheet } from "react-native";
+import { Image, View } from "react-native";
 import theme from "../assets/theme";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -6,30 +6,52 @@ import { ThemedView } from "./ThemedView";
 export default function Event({
   item,
 }: {
-  item: { id: string; title: string; image?: string };
+  item: {
+    // I hope to have images from firebase later
+    id: string;
+    hostName: string;
+    hostImage?: string; // placeholder for now
+    eventTitle: string;
+    hostFlyer?: string; // placeholder for now
+    attendees: string[]; // placeholder for now
+    dateTime: Date;
+    location: string;
+  };
 }) {
+  const formattedDateTime = `${item.dateTime.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  })} · ${item.dateTime.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  })}`;
+
   return (
     <ThemedView style={theme.eventCard}>
-      {item.image && (
+      <View style={theme.profilePicNameContainer}>
         <Image
-          source={{ uri: item.image }}
-          style={styles.image}
-          resizeMode="cover"
+          source={
+            item.hostImage
+              ? { uri: item.hostImage }
+              : require("../assets/images/placeholderClub.png")
+          }
+          style={theme.profilePic}
         />
-      )}
-      <ThemedText style={styles.title}>{item.title}</ThemedText>
+
+        <ThemedText style={[theme.typography.subtitle, { marginTop: 12 }]}>
+          {item.hostName}
+        </ThemedText>
+      </View>
+      <View style={{ alignItems: "center", gap: 8, marginBottom: 10 }}>
+        <ThemedText style={theme.typography.eventTitle}>
+          {item.eventTitle}
+        </ThemedText>
+        <ThemedText style={theme.typography.body}>
+          {formattedDateTime} · {item.location}
+        </ThemedText>
+      </View>
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: "100%",
-    height: 150,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    padding: 12,
-  },
-});

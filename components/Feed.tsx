@@ -3,30 +3,68 @@ import { StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Event from "./Event";
 
+const dummyDate = new Date(1714590600000);
+
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
+    hostName: "CS198",
+    hostImage: "",
+    eventTitle: "SL Welcome BBQ",
+    hostFlyer: "",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "CoDa B45",
   },
   {
     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
+    hostName: "Latin Student Society",
+    hostImage: "",
+    hostFlyer: "",
+    eventTitle: "Study Hours",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "Old Union",
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
+    hostName: "CS + Social Good",
+    eventTitle: "Hackathon",
+    hostImage: "",
+    hostFlyer: "",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "CoDa E160",
   },
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28b",
-    title: "First Item",
+    hostName: "Women's Volleyball",
+    eventTitle: "Home vs. Cal",
+    hostImage: "",
+    hostFlyer: "",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "Sandpit 3",
   },
   {
     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f6",
-    title: "Second Item",
+    hostName: "Stanford Transfer Network",
+    eventTitle: "Transfer Prom",
+    hostImage: "",
+    hostFlyer: "",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "Alumni Center",
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d7",
-    title: "Third Item",
+    hostName: "ASSU",
+    eventTitle: "Elections",
+    hostImage: "",
+    hostFlyer: "",
+    attendees: [] as string[],
+    dateTime: dummyDate,
+    location: "White Plaza",
   },
 ];
 

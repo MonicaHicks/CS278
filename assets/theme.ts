@@ -32,11 +32,67 @@ const cardBase = {
   ...shadow,
 };
 
-const eventCard = {
-  ...cardBase,
-  marginVertical: spacing.sm, // 2%
-  gap: spacing.lg, // 10%
+const typography = {
+  title: {
+    fontSize: 32,
+    fontWeight: "700" as const,
+    lineHeight: 36, // optional: a little taller than fontSize
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: "600" as const,
+    lineHeight: 24,
+  },
+  eventTitle: {
+    fontSize: 26,
+    fontWeight: "600" as const,
+    lineHeight: 24,
+  },
+  body: {
+    fontSize: 16,
+    fontWeight: "400" as const,
+    lineHeight: 20,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: "400" as const,
+    lineHeight: 16,
+  },
 };
 
-const theme = { colors, spacing, borderRadius, shadow, cardBase, eventCard };
+const eventCard = {
+  ...cardBase,
+  hostName: typography.subtitle,
+  eventName: typography.caption,
+  marginVertical: spacing.sm, // 8
+  gap: spacing.md, // 12
+};
+
+const profilePic = {
+  marginLeft: 10,
+  marginTop: 10,
+  width: 40,
+  height: 40,
+  borderRadius: 20, // half of width/height for perfect circle
+  backgroundColor: "#ccc", // fallback background color
+  overflow: "hidden" as const,
+};
+
+const profilePicNameContainer = {
+  flexDirection: "row" as const,
+  alignItems: "center" as const,
+  gap: 8,
+};
+
+const theme = {
+  colors,
+  typography,
+  spacing,
+  borderRadius,
+  shadow,
+  cardBase,
+  eventCard,
+  profilePic,
+  profilePicNameContainer,
+};
 export default theme;
