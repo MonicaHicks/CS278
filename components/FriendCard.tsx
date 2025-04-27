@@ -19,7 +19,7 @@ export default function FriendCard({
         <ThemedView style={theme.friendCard}>
             <View style={theme.profilePicNameContainer}>
                 <Image
-                    source = {require("../assets/images/placeholderClub.png")}
+                    source={require("../assets/images/placeholderClub.png")}
                     style={theme.profilePic}
                 />
                 <ThemedText style={[theme.typography.subtitle]}>

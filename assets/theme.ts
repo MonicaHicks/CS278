@@ -94,6 +94,21 @@ const friendCard = {
   gap: spacing.md,
 }
 
+const profileLargePic = {
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+  // backgroundColor: "#ccc", // fallback background color
+  overflow: "hidden" as const,
+}
+
+const profileNameAndInfoContainer = {
+  flexDirection: "column" as const,
+  gap: 8,
+  marginLeft: 10,
+}
+
+
 const theme = {
   colors,
   typography,
@@ -104,6 +119,8 @@ const theme = {
   eventCard,
   profilePic,
   profilePicNameContainer,
-  friendCard
+  friendCard,
+  profileLargePic,
+  profileNameAndInfoContainer
 };
 export default theme;
