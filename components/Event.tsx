@@ -1,4 +1,5 @@
-import { Image, View } from "react-native";
+import { useState } from "react";
+import { Image, Modal, Pressable, View } from "react-native";
 import theme from "../assets/theme";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -18,6 +19,8 @@ export default function Event({
     location: string;
   };
 }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const formattedDateTime = `${item.dateTime.toLocaleDateString("en-US", {
     weekday: "long",
     month: "short",
@@ -29,29 +32,62 @@ export default function Event({
   })}`;
 
   return (
-    <ThemedView style={theme.eventCard}>
-      <View style={theme.profilePicNameContainer}>
-        <Image
-          source={
-            item.hostImage
-              ? { uri: item.hostImage }
-              : require("../assets/images/placeholderClub.png")
-          }
-          style={theme.profilePic}
-        />
+    <>
+      <Pressable onPress={() => setModalVisible(true)}>
+        <ThemedView style={theme.eventCard}>
+          <View style={theme.profilePicNameContainer}>
+            <Image
+              source={
+                item.hostImage
+                  ? { uri: item.hostImage }
+                  : require("../assets/images/placeholderClub.png")
+              }
+              style={theme.profilePic}
+            />
 
-        <ThemedText style={[theme.typography.subtitle, { marginTop: 12 }]}>
-          {item.hostName}
-        </ThemedText>
-      </View>
-      <View style={{ alignItems: "center", gap: 8, marginBottom: 10 }}>
-        <ThemedText style={theme.typography.eventTitle}>
-          {item.eventTitle}
-        </ThemedText>
-        <ThemedText style={theme.typography.body}>
-          {formattedDateTime} · {item.location}
-        </ThemedText>
-      </View>
-    </ThemedView>
+            <ThemedText style={[theme.typography.subtitle, { marginTop: 12 }]}>
+              {item.hostName}
+            </ThemedText>
+          </View>
+          <View style={{ alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <ThemedText style={theme.typography.eventTitle}>
+              {item.eventTitle}
+            </ThemedText>
+            <ThemedText style={theme.typography.body}>
+              {formattedDateTime} · {item.location}
+            </ThemedText>
+          </View>
+        </ThemedView>
+      </Pressable>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={theme.eventModalOverlay}>
+          <View style={theme.eventModalContent}>
+            <ThemedText style={theme.typography.eventTitle}>
+              {item.eventTitle}
+            </ThemedText>
+            <ThemedText style={theme.typography.subtitle}>
+              Hosted by {item.hostName}
+            </ThemedText>
+            <ThemedText style={theme.typography.body}>
+              {formattedDateTime}
+            </ThemedText>
+            <ThemedText style={theme.typography.body}>
+              Location: {item.location}
+            </ThemedText>
+            <Pressable onPress={() => setModalVisible(false)}>
+              <ThemedText style={[theme.typography.body, { marginTop: 20 }]}>
+                Close
+              </ThemedText>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
