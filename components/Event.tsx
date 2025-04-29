@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Image, Modal, Pressable, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import theme from "../assets/theme";
+import EventModal from "./EventModal";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
@@ -60,34 +61,11 @@ export default function Event({
         </ThemedView>
       </Pressable>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <EventModal
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={theme.eventModalOverlay}>
-          <View style={theme.eventModalContent}>
-            <ThemedText style={theme.typography.eventTitle}>
-              {item.eventTitle}
-            </ThemedText>
-            <ThemedText style={theme.typography.subtitle}>
-              Hosted by {item.hostName}
-            </ThemedText>
-            <ThemedText style={theme.typography.body}>
-              {formattedDateTime}
-            </ThemedText>
-            <ThemedText style={theme.typography.body}>
-              Location: {item.location}
-            </ThemedText>
-            <Pressable onPress={() => setModalVisible(false)}>
-              <ThemedText style={[theme.typography.body, { marginTop: 20 }]}>
-                Close
-              </ThemedText>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModalVisible(false)}
+        item={item}
+      />
     </>
   );
 }
