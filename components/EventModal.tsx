@@ -70,6 +70,16 @@ export default function EventModal({
                 {item.hostName}
               </ThemedText>
             </View>
+            <View style={{ alignItems: "center" as const }}>
+              <Image
+                source={
+                  item.hostImage
+                    ? { uri: item.hostImage }
+                    : require("../assets/images/Sample_Flyer.png")
+                }
+                style={theme.flyerFull}
+              />
+            </View>
             <View style={{ alignItems: "center", gap: 8, margin: 10 }}>
               <ThemedText style={theme.typography.title}>
                 {item.eventTitle}

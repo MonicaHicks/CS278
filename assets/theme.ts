@@ -116,6 +116,12 @@ const closeButton = {
   borderWidth: 1,
 };
 
+const flyerFull = {
+  width: "30%" as DimensionValue,
+  resizeMode: "contain" as const,
+  marginBottom: 16,
+};
+
 const theme = {
   colors,
   typography,
@@ -129,5 +135,6 @@ const theme = {
   eventModalOverlay,
   eventModalContent,
   closeButton,
+  flyerFull,
 };
 export default theme;
