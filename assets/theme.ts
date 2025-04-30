@@ -104,6 +104,18 @@ const eventModalContent = {
   elevation: 5,
 };
 
+const closeButton = {
+  marginTop: 20,
+  color: "white",
+  backgroundColor: colors.primary,
+  width: 60,
+  alignItems: "center" as const,
+  justifyContent: "center" as const,
+  borderRadius: 5,
+  borderColor: "#000",
+  borderWidth: 1,
+};
+
 const theme = {
   colors,
   typography,
@@ -116,5 +128,6 @@ const theme = {
   profilePicNameContainer,
   eventModalOverlay,
   eventModalContent,
+  closeButton,
 };
 export default theme;

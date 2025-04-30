@@ -2,8 +2,10 @@
 import React from "react";
 import {
   GestureResponderEvent,
+  Image,
   Modal,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import theme from "../assets/theme";
@@ -29,11 +31,12 @@ export default function EventModal({
   onClose: (event?: GestureResponderEvent) => void;
   item: EventItem;
 }) {
-  const formattedDateTime = `${item.dateTime.toLocaleDateString("en-US", {
+  const formattedDate = `${item.dateTime.toLocaleDateString("en-US", {
     weekday: "long",
     month: "short",
     day: "numeric",
-  })} · ${item.dateTime.toLocaleTimeString("en-US", {
+  })}`;
+  const formattedTime = `${item.dateTime.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -46,29 +49,51 @@ export default function EventModal({
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={theme.eventModalOverlay}>
-        <View style={theme.eventModalContent}>
-          <ThemedText style={theme.typography.eventTitle}>
-            {item.eventTitle}
-          </ThemedText>
-          <ThemedText style={theme.typography.subtitle}>
-            Hosted by {item.hostName}
-          </ThemedText>
-          <ThemedText style={theme.typography.body}>
-            {formattedDateTime}
-          </ThemedText>
-          <ThemedText style={theme.typography.body}>
-            Location: {item.location}
-          </ThemedText>
-          <TouchableOpacity onPress={onClose}>
-            <ThemedText
-              style={[theme.typography.body, { marginTop: 20, color: "blue" }]}
+      <TouchableWithoutFeedback onPress={onClose}>
+        <View style={theme.eventModalOverlay}>
+          <View style={theme.eventModalContent}>
+            <View
+              style={[theme.profilePicNameContainer, { marginVertical: 8 }]}
             >
-              Close
-            </ThemedText>
-          </TouchableOpacity>
+              <Image
+                source={
+                  item.hostImage
+                    ? { uri: item.hostImage }
+                    : require("../assets/images/Placeholder_Club.png")
+                }
+                style={theme.profilePic}
+              />
+
+              <ThemedText
+                style={[theme.typography.eventTitle, { marginTop: 12 }]}
+              >
+                {item.hostName}
+              </ThemedText>
+            </View>
+            <View style={{ alignItems: "center", gap: 8, margin: 10 }}>
+              <ThemedText style={theme.typography.title}>
+                {item.eventTitle}
+              </ThemedText>
+            </View>
+            <View style={{ alignItems: "center" as const, gap: 6 }}>
+              <ThemedText style={theme.typography.subtitle}>
+                {formattedTime}
+              </ThemedText>
+              <ThemedText style={theme.typography.subtitle}>
+                {formattedDate}
+              </ThemedText>
+              <ThemedText style={theme.typography.subtitle}>
+                Location: {item.location}
+              </ThemedText>
+            </View>
+            <TouchableOpacity onPress={onClose} style={theme.closeButton}>
+              <ThemedText style={[theme.typography.body, { color: "#fff" }]}>
+                Close
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }

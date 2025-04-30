@@ -41,7 +41,7 @@ export default function Event({
               source={
                 item.hostImage
                   ? { uri: item.hostImage }
-                  : require("../assets/images/placeholderClub.png")
+                  : require("../assets/images/Placeholder_Club.png")
               }
               style={theme.profilePic}
             />
