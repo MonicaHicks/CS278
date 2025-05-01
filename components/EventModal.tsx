@@ -4,7 +4,6 @@ import {
   GestureResponderEvent,
   Image,
   Modal,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -70,21 +69,29 @@ export default function EventModal({
                 {item.hostName}
               </ThemedText>
             </View>
-            <View style={{ alignItems: "center" as const }}>
-              <Image
-                source={
-                  item.hostImage
-                    ? { uri: item.hostImage }
-                    : require("../assets/images/Sample_Flyer.png")
-                }
-                style={theme.flyerFull}
-              />
-            </View>
             <View style={{ alignItems: "center", gap: 8, margin: 10 }}>
               <ThemedText style={theme.typography.title}>
                 {item.eventTitle}
               </ThemedText>
             </View>
+            {/* make it so you can click on the flyer to englarge */}
+            <Image
+              source={
+                item.hostFlyer
+                  ? { uri: item.hostFlyer }
+                  : require("../assets/images/Sample_Flyer.png")
+              }
+              style={[
+                theme.flyerFull,
+                {
+                  width: "100%",
+                  height: 200,
+                  resizeMode: "cover",
+                  borderRadius: 8,
+                  marginBottom: 12,
+                },
+              ]}
+            />
             <View style={{ alignItems: "center" as const, gap: 6 }}>
               <ThemedText style={theme.typography.subtitle}>
                 {formattedTime}
@@ -96,11 +103,6 @@ export default function EventModal({
                 Location: {item.location}
               </ThemedText>
             </View>
-            <TouchableOpacity onPress={onClose} style={theme.closeButton}>
-              <ThemedText style={[theme.typography.body, { color: "#fff" }]}>
-                Close
-              </ThemedText>
-            </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>
