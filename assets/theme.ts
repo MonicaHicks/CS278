@@ -93,7 +93,7 @@ const friendCard = {
   ...cardBase,
   marginVertical: spacing.sm,
   gap: spacing.md,
-}
+};
 
 const profileLargePic = {
   width: 100,
@@ -101,13 +101,13 @@ const profileLargePic = {
   borderRadius: 50,
   // backgroundColor: "#ccc", // fallback background color
   overflow: "hidden" as const,
-}
+};
 
 const profileNameAndInfoContainer = {
   flexDirection: "column" as const,
   gap: 8,
   marginLeft: 10,
-}
+};
 
 const searchBar = {
   borderRadius: borderRadius.sm,
@@ -117,7 +117,7 @@ const searchBar = {
   borderWidth: 1,
   borderColor: colors.primary,
   borderStyle: "solid" as const,
-}
+};
 
 const eventModalOverlay = {
   flex: 1,
@@ -169,7 +169,7 @@ const theme = {
   friendCard,
   profileLargePic,
   profileNameAndInfoContainer,
-  searchBar
+  searchBar,
   eventModalOverlay,
   eventModalContent,
   closeButton,
