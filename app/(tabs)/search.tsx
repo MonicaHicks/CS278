@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { sampleUser } from "../types";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import theme from "@/assets/theme";
-import FriendList from "@/components/FriendList";
+import SearchList from "@/components/SearchList";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -31,7 +31,7 @@ export default function ProfileScreen() {
                 placeholderTextColor="#808080"
             />
         </ThemedView>
-        <FriendList/>
+        <SearchList/>
         </ParallaxScrollView>
     );
 }
