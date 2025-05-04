@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { Image, View } from "react-native";
-import { User } from "../app/types";
 import theme from "../assets/theme";
+import { User } from "./types";
 
 export default function ProfileHeader(userProfile: User) {
   return (
