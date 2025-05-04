@@ -156,6 +156,14 @@ const flyerFull = {
   marginBottom: 16,
 };
 
+const profileAndDisplayName = {
+  flexDirection: "column" as const,
+  gap: 4,
+  marginLeft: 10,
+  marginTop: 10,
+  marginBottom: 10,
+}
+
 const theme = {
   colors,
   typography,
@@ -174,5 +182,6 @@ const theme = {
   eventModalContent,
   closeButton,
   flyerFull,
+  profileAndDisplayName
 };
 export default theme;
