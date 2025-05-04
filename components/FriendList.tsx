@@ -1,50 +1,33 @@
 import { ThemedView } from "./ThemedView";
 import FriendCard from "./FriendCard";
+import { sampleEvents } from "@/app/types";
 
 const FRIENDS = [
     {
         id: "1",
         name: 'Shannon K.',
         image: "",
-        eventsAttending: [
-            'baseball',
-            'coffee',
-            'tech free night',
-        ]
+        eventsAttending: sampleEvents
     },    {
         id: "2",
         name: 'Holly J.',
         image: "",
-        eventsAttending: [
-            'food fight',
-            'fencing'
-        ]
+        eventsAttending: sampleEvents
     },    {
         id: "3",
         name: 'Andrew K.',
         image: "",
-        eventsAttending: [
-            'leather making',
-            'yoga',
-            'mario kart tournament',
-        ]
+        eventsAttending: sampleEvents
     },    {
         id: "4",
         name: 'Tina A.',
         image: "",
-        eventsAttending: [
-            'mv watch party',
-            'champions league watch party',
-            'tech coffee night',
-        ]
+        eventsAttending: sampleEvents
     },    {
         id: "5",
         name: 'Akaash M.',
         image: "",
-        eventsAttending: [
-            'sf tour',
-            'mario kart tournament',
-        ]
+        eventsAttending: sampleEvents
     },
 ];
 
