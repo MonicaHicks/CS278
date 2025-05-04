@@ -29,4 +29,15 @@ export type Event = {
     attendees: string[];            // List of user IDs
     dateTime: Date;                 // Date and time of the event
     location: string;               // Location of the event
+    comments: string[];             // List of comment IDs
+};
+
+export type Comment = {
+    id: string;                     // Unique identifier for the comment
+    userId: string;                 // ID of the user who made the comment
+    eventId: string;                // ID of the event the comment is associated with
+    content: string;                // Content of the comment
+    timestamp: Date;                // Date and time the comment was made
+    parentId?: string;              // ID of the parent comment if it's a reply
+    likes: string[];                // List of user IDs who liked the comment
 };
