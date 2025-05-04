@@ -1,6 +1,6 @@
 import { ThemedView } from "./ThemedView";
 import FriendCard from "./FriendCard";
-import { sampleEvents } from "@/app/types";
+import { sampleEvents } from "@/components/types";
 
 const FRIENDS = [
     {

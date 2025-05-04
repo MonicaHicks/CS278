@@ -2,7 +2,7 @@ import { Image, View, StyleSheet } from "react-native";
 import theme from "../assets/theme";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
-import { Event } from "../app/types";
+import { Event } from "../components/types";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function FriendCard({

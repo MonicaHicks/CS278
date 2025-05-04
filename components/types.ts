@@ -32,6 +32,44 @@ export type Event = {
     comments: string[];             // List of comment IDs
 };
 
+const dummyDate = new Date(1714590600000);
+
+export const sampleEvents: Event[] = [
+    {
+        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+        hostName: "CS198",
+        hostImage: "",
+        eventTitle: "SL Welcome BBQ",
+        hostFlyer: "",
+        attendees: [] as string[],
+        dateTime: dummyDate,
+        location: "CoDa B45",
+        comments: [],
+    },
+    {
+        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+        hostName: "Latin Student Society",
+        hostImage: "",
+        hostFlyer: "",
+        eventTitle: "Study Hours",
+        attendees: [] as string[],
+        dateTime: dummyDate,
+        location: "Old Union",
+        comments: [],
+    },
+    {
+        id: "58694a0f-3da1-471f-bd96-145571e29d72",
+        hostName: "CS + Social Good",
+        eventTitle: "Hackathon",
+        hostImage: "",
+        hostFlyer: "",
+        attendees: [] as string[],
+        dateTime: dummyDate,
+        location: "CoDa E160",
+        comments: [],
+    },
+];
+
 export type Comment = {
     id: string;                     // Unique identifier for the comment
     userId: string;                 // ID of the user who made the comment
