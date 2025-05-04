@@ -1,3 +1,4 @@
+import { DimensionValue } from "react-native";
 const colors = {
   primary: "#8C1515", // Stanford red
   background: "#FDF8F3", // creamy beige
@@ -92,7 +93,7 @@ const friendCard = {
   ...cardBase,
   marginVertical: spacing.sm,
   gap: spacing.md,
-}
+};
 
 const profileLargePic = {
   width: 100,
@@ -100,13 +101,13 @@ const profileLargePic = {
   borderRadius: 50,
   // backgroundColor: "#ccc", // fallback background color
   overflow: "hidden" as const,
-}
+};
 
 const profileNameAndInfoContainer = {
   flexDirection: "column" as const,
   gap: 8,
   marginLeft: 10,
-}
+};
 
 const searchBar = {
   borderRadius: borderRadius.sm,
@@ -116,7 +117,44 @@ const searchBar = {
   borderWidth: 1,
   borderColor: colors.primary,
   borderStyle: "solid" as const,
-}
+};
+
+const eventModalOverlay = {
+  flex: 1,
+  justifyContent: "center" as const,
+  alignItems: "center" as const,
+  backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent dark backdrop
+};
+
+const eventModalContent = {
+  width: "85%" as DimensionValue, // 👈 fix here
+  backgroundColor: "#fff",
+  borderRadius: 16,
+  padding: 20,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
+  elevation: 5,
+};
+
+const closeButton = {
+  marginTop: 20,
+  color: "white",
+  backgroundColor: colors.primary,
+  width: 60,
+  alignItems: "center" as const,
+  justifyContent: "center" as const,
+  borderRadius: 5,
+  borderColor: "#000",
+  borderWidth: 1,
+};
+
+const flyerFull = {
+  width: "30%" as DimensionValue,
+  resizeMode: "contain" as const,
+  marginBottom: 16,
+};
 
 const profileAndDisplayName = {
   flexDirection: "column" as const,
@@ -140,6 +178,10 @@ const theme = {
   profileLargePic,
   profileNameAndInfoContainer,
   searchBar,
+  eventModalOverlay,
+  eventModalContent,
+  closeButton,
+  flyerFull,
   profileAndDisplayName
 };
 export default theme;

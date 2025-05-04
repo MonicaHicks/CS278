@@ -1,9 +1,10 @@
-import { Image, View, StyleSheet, TextInput } from "react-native";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
-import { sampleUser } from "../types";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import theme from "@/assets/theme";
+import FriendList from "@/components/FriendList";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { Image, StyleSheet, TextInput, View } from "react-native";
+import { sampleUser } from "../../components/types";
 import SearchList from "@/components/SearchList";
 
 const Separator = () => <View style={styles.separator} />;
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   separator: {
-    borderBottomColor: '#737373',
+    borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
-  }
+  },
 });
