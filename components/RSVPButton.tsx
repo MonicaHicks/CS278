@@ -1,17 +1,28 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import theme from "../assets/theme";
 import { ThemedText } from "./ThemedText";
 
 export default function RSVPButton() {
   return (
-    <View>
-      <ThemedText style={styles.text}>RSVP</ThemedText>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          Alert.alert("success!");
+        }}
+      >
+        <View style={styles.button}>
+          <ThemedText style={styles.text}>RSVP</ThemedText>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 10,
+  },
   button: {
     backgroundColor: theme.colors.primary,
     paddingVertical: 12,
