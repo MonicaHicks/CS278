@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import theme from "../assets/theme";
+import RSVPButton from "./RSVPButton";
 import { ThemedText } from "./ThemedText";
 
 type EventItem = {
@@ -103,6 +104,7 @@ export default function EventModal({
                 Location: {item.location}
               </ThemedText>
             </View>
+            <RSVPButton />
           </View>
         </View>
       </TouchableWithoutFeedback>
