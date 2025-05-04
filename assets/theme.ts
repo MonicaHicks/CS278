@@ -108,6 +108,15 @@ const profileNameAndInfoContainer = {
   marginLeft: 10,
 }
 
+const searchBar = {
+  borderRadius: borderRadius.sm,
+  padding: spacing.sm,
+  marginVertical: spacing.md,
+  height: 50,
+  borderWidth: 1,
+  borderColor: colors.primary,
+  borderStyle: "solid" as const,
+}
 
 const theme = {
   colors,
@@ -121,6 +130,7 @@ const theme = {
   profilePicNameContainer,
   friendCard,
   profileLargePic,
-  profileNameAndInfoContainer
+  profileNameAndInfoContainer,
+  searchBar
 };
 export default theme;

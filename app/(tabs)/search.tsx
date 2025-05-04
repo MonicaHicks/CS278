@@ -1,12 +1,10 @@
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, TextInput } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import ProfileHeader from "@/components/ProfileHeader";
 import { sampleUser } from "../types";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import FollowButton from "@/components/FollowButton";
 import theme from "@/assets/theme";
-import Feed from "@/components/Feed";
+import FriendList from "@/components/FriendList";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -24,17 +22,16 @@ export default function ProfileScreen() {
         }
         >
         <ThemedView>
-            <ProfileHeader {...user} />
-        </ThemedView>
-        <Separator />
-        <FollowButton isFollowing={false} />
-        <Separator />
-        <ThemedView>
-            <ThemedText style={{ alignItems: "center", gap: 8, marginBottom: 10 }}>
-                Upcomping Events
+            <ThemedText type="title">
+                Find friends and clubs
             </ThemedText>
-            <Feed/>
+            <TextInput
+                style={theme.searchBar}
+                placeholder="Enter name here"
+                placeholderTextColor="#808080"
+            />
         </ThemedView>
+        <FriendList/>
         </ParallaxScrollView>
     );
 }

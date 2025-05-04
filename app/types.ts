@@ -12,8 +12,8 @@ export type User = {
 
 export const sampleUser: User = {
     id: "1",
-    name: "First Last",
-    displayName: "firstlast",
+    name: "Shannon K.",
+    displayName: "skomguem",
     email: "firstlast@stanford.edu",
     image: "",
     events: ["event1", "event2", "event3"],
