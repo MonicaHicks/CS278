@@ -23,7 +23,7 @@ export default function FriendCard({
             <TouchableOpacity
                 onPress={() => {
                     console.log("Friend profile pressed");
-                    router.navigate("/(tabs)/profile");
+                    router.push("/(tabs)/friends/profile");
                 }}
             >
                 <View style={theme.profilePicNameContainer}>
