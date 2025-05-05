@@ -46,12 +46,28 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="events/events"
         options={{
           title: "My Events",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="heart.fill" color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{ 
+          tabBarIconStyle: { display: 'none' },
+          tabBarLabelStyle: { display: 'none' },
+          tabBarItemStyle: { display: 'none' }
+        }}
+      />
+      <Tabs.Screen
+        name="search"
+        options={{ 
+          tabBarIconStyle: { display: 'none' },
+          tabBarLabelStyle: { display: 'none' },
+          tabBarItemStyle: { display: 'none' }
         }}
       />
     </Tabs>
