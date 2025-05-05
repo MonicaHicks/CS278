@@ -1,9 +1,10 @@
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, TouchableOpacity, Pressable } from "react-native";
 import theme from "../assets/theme";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import { Event } from "../components/types";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 export default function FriendCard({
   friendInfo,
@@ -16,20 +17,28 @@ export default function FriendCard({
         eventsAttending: Event[];
     };
 }) {
+    const router = useRouter();
     return (
         <ThemedView style={theme.friendCard}>
-            <View style={theme.profilePicNameContainer}>
-                <Image
-                    source={require("../assets/images/Placeholder_Club.png")}
-                    style={theme.profilePic}
-                />
-                <ThemedText style={[theme.typography.subtitle]}>
-                    {friendInfo.name}
-                </ThemedText>
-                <ThemedText style={[theme.typography.body]}>
-                    is attending {friendInfo.eventsAttending.length} events:
-                </ThemedText>
-            </View>
+            <TouchableOpacity
+                onPress={() => {
+                    console.log("Friend profile pressed");
+                    router.navigate("/(tabs)/profile");
+                }}
+            >
+                <View style={theme.profilePicNameContainer}>
+                    <Image
+                        source={require("../assets/images/Placeholder_Club.png")}
+                        style={theme.profilePic}
+                    />
+                    <ThemedText style={[theme.typography.subtitle]}>
+                        {friendInfo.name}
+                    </ThemedText>
+                    <ThemedText style={[theme.typography.body]}>
+                        is attending {friendInfo.eventsAttending.length} events:
+                    </ThemedText>
+                </View>
+            </TouchableOpacity>
             <EventList eventsAttending={friendInfo.eventsAttending} />
         </ThemedView>
     );

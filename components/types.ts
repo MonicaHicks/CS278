@@ -7,7 +7,18 @@ export type User = {
     email: string;                  // Email address of the user
     image: string;                  // URL to the user's profile image
     events: string[];               // List of event IDs the has or will attend
-    friends: string[];              // List of user IDs of the user's friends
+    following: string[];            // List of user and club IDs the user follows
+};
+
+
+export type Club = {
+    id: string;                     // Unique identifier for the club
+    name: string;                   // Name of the club
+    email: string;                  // Email address of the club
+    image: string;                  // URL to the club's profile image
+    events: string[];               // List of event IDs the club has hosted
+    followers: string[];            // List of user IDs who follow the club
+    description: string;            // Description of the club
 };
 
 export const sampleUser: User = {
@@ -17,7 +28,7 @@ export const sampleUser: User = {
     email: "firstlast@stanford.edu",
     image: "",
     events: ["event1", "event2", "event3"],
-    friends: ["friend1", "friend2", "friend3"],
+    following: ["friend1", "friend2", "friend3"],
 };
 
 export type Event = {
