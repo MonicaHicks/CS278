@@ -9,14 +9,13 @@ export default function FriendsScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <GlobalHeaderImage/>
-      }>
+      headerImage={<GlobalHeaderImage />}
+    >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Friends</ThemedText>
       </ThemedView>
       <ThemedText>See what your friends are up to.</ThemedText>
-      <FriendList/>
+      <FriendList />
     </ParallaxScrollView>
   );
 }
@@ -25,5 +24,5 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
-  }
+  },
 });

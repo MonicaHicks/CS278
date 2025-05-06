@@ -1,18 +1,16 @@
-import { StyleSheet } from "react-native";
-import Feed from "@/components/Feed";
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import GlobalHeaderImage from "@/components/GlobalHeaderImage";
+import { StyleSheet } from 'react-native';
+import Feed from '@/components/Feed';
+import { HelloWave } from '@/components/HelloWave';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <GlobalHeaderImage/>
-      }
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerImage={<GlobalHeaderImage />}
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Upcoming Events</ThemedText>
@@ -28,9 +26,9 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
   },
   stepContainer: {
@@ -39,6 +37,6 @@ const styles = StyleSheet.create({
     width: 100,
   },
   feed: {
-    width: "100%",
-  }
+    width: '100%',
+  },
 });

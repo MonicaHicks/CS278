@@ -1,8 +1,8 @@
-import { Image, View, TouchableOpacity } from "react-native";
-import theme from "../assets/theme";
-import { ThemedText } from "./ThemedText";
-import { ThemedView } from "./ThemedView";
-import { useRouter } from "expo-router";
+import { Image, View, TouchableOpacity } from 'react-native';
+import theme from '../assets/theme';
+import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
+import { useRouter } from 'expo-router';
 
 export default function FriendShortCard({
   friendInfo,
@@ -20,13 +20,13 @@ export default function FriendShortCard({
     <ThemedView style={theme.friendCard}>
       <TouchableOpacity
         onPress={() => {
-          console.log("Friend card pressed");
-          router.navigate("/(tabs)/profile");
+          console.log('Friend card pressed');
+          router.navigate('/(tabs)/profile');
         }}
       >
         <View style={theme.profilePicNameContainer}>
           <Image
-            source={require("../assets/images/Placeholder_Club.png")}
+            source={require('../assets/images/Placeholder_Club.png')}
             style={theme.profilePic}
           />
           <View style={theme.profileAndDisplayName}>
