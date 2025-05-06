@@ -1,26 +1,18 @@
 // components/EventModal.tsx
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   GestureResponderEvent,
   Image,
   Modal,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import theme from "../assets/theme";
 import RSVPButton from "./RSVPButton";
 import { ThemedText } from "./ThemedText";
-
-type EventItem = {
-  id: string;
-  hostName: string;
-  hostImage?: string;
-  eventTitle: string;
-  hostFlyer?: string;
-  attendees: string[];
-  dateTime: Date;
-  location: string;
-};
+import { Event } from "./types";
 
 export default function EventModal({
   visible,
@@ -29,8 +21,9 @@ export default function EventModal({
 }: {
   visible: boolean;
   onClose: (event?: GestureResponderEvent) => void;
-  item: EventItem;
+  item: Event;
 }) {
+  const router = useRouter();
   const formattedDate = `${item.dateTime.toLocaleDateString("en-US", {
     weekday: "long",
     month: "short",
@@ -63,18 +56,27 @@ export default function EventModal({
                 }
                 style={theme.profilePic}
               />
-
               <ThemedText
                 style={[theme.typography.eventTitle, { marginTop: 12 }]}
               >
                 {item.hostName}
               </ThemedText>
             </View>
-            <View style={{ alignItems: "center", gap: 8, margin: 10 }}>
+            {/* <View > */}
+            <TouchableOpacity
+              style={{ alignItems: "center", gap: 8, margin: 10 }}
+              onPress={() => {
+                onClose();
+                setTimeout(() => {
+                  router.push(`/events/${item.id}`);
+                }, 200);
+              }}
+            >
               <ThemedText style={theme.typography.title}>
                 {item.eventTitle}
               </ThemedText>
-            </View>
+            </TouchableOpacity>
+            {/* </View> */}
             {/* make it so you can click on the flyer to englarge */}
             <Image
               source={
