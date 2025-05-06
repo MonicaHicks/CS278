@@ -63,6 +63,14 @@ const typography = {
     fontWeight: "400" as const,
     lineHeight: 16,
   },
+  activeText: {
+    color: colors.cardBackground,
+    fontWeight: "600" as const,
+  },
+  inactiveText: {
+    color: colors.text,
+    fontWeight: "500" as const,
+  },
 };
 
 const eventCard = {
@@ -162,7 +170,29 @@ const profileAndDisplayName = {
   marginLeft: 10,
   marginTop: 10,
   marginBottom: 10,
-}
+};
+
+const toggleContainer = {
+  flexDirection: "row" as const,
+  alignSelf: "center" as const,
+  borderRadius: 8,
+  borderWidth: 1,
+  borderColor: "#ccc",
+  overflow: "hidden" as const,
+  marginTop: 16,
+};
+const toggleButton = {
+  paddingVertical: 8,
+  paddingHorizontal: 16,
+  backgroundColor: "#ccc",
+};
+const activeButton = {
+  backgroundColor: colors.primary,
+};
+
+const inactiveButton = {
+  backgroundColor: colors.cardBackground,
+};
 
 const theme = {
   colors,
@@ -182,6 +212,10 @@ const theme = {
   eventModalContent,
   closeButton,
   flyerFull,
-  profileAndDisplayName
+  profileAndDisplayName,
+  toggleButton,
+  toggleContainer,
+  activeButton,
+  inactiveButton,
 };
 export default theme;
