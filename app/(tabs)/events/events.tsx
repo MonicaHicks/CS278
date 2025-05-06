@@ -1,72 +1,68 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import theme from "@/assets/theme";
 import Feed from "@/components/Feed";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useState } from "react";
+import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function HomeScreen() {
-  const [view, setView] = useState<"myEvents" | "upcoming">("myEvents");
+  const [view, setView] = useState<"upcomingEvents" | "pastEvents">("upcomingEvents");
 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
-        <Image
-          source={require("@/assets/images/Stanford_Oval.png")}
-          style={styles.reactLogo}
-        />
+        <GlobalHeaderImage/>
       }
     >
+    <ThemedText type='title'>My Events</ThemedText>
       <View style={theme.toggleContainer}>
         <TouchableOpacity
           style={[
             theme.toggleButton,
-            view === "myEvents" ? theme.activeButton : theme.inactiveButton,
+            view === "upcomingEvents" ? theme.activeButton : theme.inactiveButton,
             { borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
           ]}
-          onPress={() => setView("myEvents")}
+          onPress={() => setView("upcomingEvents")}
         >
           <ThemedText
             style={
-              view === "myEvents"
+              view === "upcomingEvents"
                 ? theme.typography.activeText
                 : theme.typography.inactiveText
             }
           >
-            My Events
+            Upcoming Events
           </ThemedText>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
             theme.toggleButton,
-            view === "upcoming" ? theme.activeButton : theme.inactiveButton,
+            view === "pastEvents" ? theme.activeButton : theme.inactiveButton,
             { borderTopRightRadius: 8, borderBottomRightRadius: 8 },
           ]}
-          onPress={() => setView("upcoming")}
+          onPress={() => setView("pastEvents")}
         >
           <ThemedText
             style={
-              view === "upcoming"
+              view === "pastEvents"
                 ? theme.typography.activeText
                 : theme.typography.inactiveText
             }
           >
-            All Events
+            Past Events
           </ThemedText>
         </TouchableOpacity>
       </View>
 
       <ThemedView style={styles.feed}>
-        {view === "myEvents" ? (
+        {view === "upcomingEvents" ? (
           <View>
-            <ThemedText type="title">My Events</ThemedText>
           </View>
         ) : (
           <View>
-            <ThemedText type="title">All Events</ThemedText>
             <Feed />
           </View>
         )}
@@ -76,24 +72,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 1,
-    width: 100,
-  },
-  reactLogo: {
-    height: "100%",
-    width: "100%",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
   feed: {
     width: "100%",
   },
