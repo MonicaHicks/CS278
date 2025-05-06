@@ -17,6 +17,7 @@ export default function HomeScreen() {
         <GlobalHeaderImage/>
       }
     >
+      <ThemedText type="title">My Events</ThemedText>
       <View style={theme.toggleContainer}>
         <TouchableOpacity
           style={[
@@ -33,7 +34,7 @@ export default function HomeScreen() {
                 : theme.typography.inactiveText
             }
           >
-            My Events
+            Upcoming Events
           </ThemedText>
         </TouchableOpacity>
         <TouchableOpacity
@@ -51,7 +52,7 @@ export default function HomeScreen() {
                 : theme.typography.inactiveText
             }
           >
-            All Events
+            Past Events
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -59,11 +60,9 @@ export default function HomeScreen() {
       <ThemedView style={styles.feed}>
         {view === "myEvents" ? (
           <View>
-            <ThemedText type="title">My Events</ThemedText>
           </View>
         ) : (
           <View>
-            <ThemedText type="title">All Events</ThemedText>
             <Feed />
           </View>
         )}
