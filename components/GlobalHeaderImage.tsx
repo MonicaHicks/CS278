@@ -1,4 +1,5 @@
 import { View, Image, StyleSheet } from 'react-native';
+import BackButton from './BackButton';
 import ProfileAndSearchButtons from './ProfileAndSeachButtons';
 
 export default function GlobalHeaderImage() {
@@ -9,6 +10,7 @@ export default function GlobalHeaderImage() {
         style={styles.reactLogo}
         resizeMode="cover"
       />
+      <BackButton />
       <ProfileAndSearchButtons />
     </View>
   );
