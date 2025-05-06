@@ -78,6 +78,14 @@ export default function TabLayout() {
           tabBarItemStyle: { display: "none" },
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{ 
+          tabBarIconStyle: { display: 'none' },
+          tabBarLabelStyle: { display: 'none' },
+          tabBarItemStyle: { display: 'none' }
+        }}
+      />
     </Tabs>
   );
 }
