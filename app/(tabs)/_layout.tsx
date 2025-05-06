@@ -55,19 +55,27 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="events/[id]"
+        options={{
+          tabBarIconStyle: { display: "none" },
+          tabBarLabelStyle: { display: "none" },
+          tabBarItemStyle: { display: "none" },
+        }}
+      />
+      <Tabs.Screen
         name="index"
-        options={{ 
-          tabBarIconStyle: { display: 'none' },
-          tabBarLabelStyle: { display: 'none' },
-          tabBarItemStyle: { display: 'none' }
+        options={{
+          tabBarIconStyle: { display: "none" },
+          tabBarLabelStyle: { display: "none" },
+          tabBarItemStyle: { display: "none" },
         }}
       />
       <Tabs.Screen
         name="search"
-        options={{ 
-          tabBarIconStyle: { display: 'none' },
-          tabBarLabelStyle: { display: 'none' },
-          tabBarItemStyle: { display: 'none' }
+        options={{
+          tabBarIconStyle: { display: "none" },
+          tabBarLabelStyle: { display: "none" },
+          tabBarItemStyle: { display: "none" },
         }}
       />
     </Tabs>
