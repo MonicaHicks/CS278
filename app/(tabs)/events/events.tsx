@@ -8,7 +8,7 @@ import { useState } from "react";
 import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function HomeScreen() {
-  const [view, setView] = useState<"myEvents" | "upcoming">("myEvents");
+  const [view, setView] = useState<"upcomingEvents" | "pastEvents">("upcomingEvents");
 
   return (
     <ParallaxScrollView
@@ -17,19 +17,19 @@ export default function HomeScreen() {
         <GlobalHeaderImage/>
       }
     >
-      <ThemedText type="title">My Events</ThemedText>
+    <ThemedText type='title'>My Events</ThemedText>
       <View style={theme.toggleContainer}>
         <TouchableOpacity
           style={[
             theme.toggleButton,
-            view === "myEvents" ? theme.activeButton : theme.inactiveButton,
+            view === "upcomingEvents" ? theme.activeButton : theme.inactiveButton,
             { borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
           ]}
-          onPress={() => setView("myEvents")}
+          onPress={() => setView("upcomingEvents")}
         >
           <ThemedText
             style={
-              view === "myEvents"
+              view === "upcomingEvents"
                 ? theme.typography.activeText
                 : theme.typography.inactiveText
             }
@@ -40,14 +40,14 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={[
             theme.toggleButton,
-            view === "upcoming" ? theme.activeButton : theme.inactiveButton,
+            view === "pastEvents" ? theme.activeButton : theme.inactiveButton,
             { borderTopRightRadius: 8, borderBottomRightRadius: 8 },
           ]}
-          onPress={() => setView("upcoming")}
+          onPress={() => setView("pastEvents")}
         >
           <ThemedText
             style={
-              view === "upcoming"
+              view === "pastEvents"
                 ? theme.typography.activeText
                 : theme.typography.inactiveText
             }
@@ -58,7 +58,7 @@ export default function HomeScreen() {
       </View>
 
       <ThemedView style={styles.feed}>
-        {view === "myEvents" ? (
+        {view === "upcomingEvents" ? (
           <View>
           </View>
         ) : (
