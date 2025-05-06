@@ -7,6 +7,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -14,30 +15,7 @@ export default function HomeScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
-        <View style={styles.headerWrapper}>
-          <Image
-            source={require("@/assets/images/Stanford_Oval.png")}
-            style={styles.reactLogo}
-            resizeMode="cover"
-          />
-          <View style={styles.iconContainer}>
-            <TouchableOpacity style={styles.icon}
-              onPress={() => {
-                // Navigate to profile screen
-                router.push("/(tabs)/profile");
-              }}
-            >
-              <Ionicons name="person-circle" size={40} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconSearch}
-              onPress={() => {
-                // Navigate to profile screen
-                router.push("/(tabs)/search");
-              }}>
-              <Ionicons name="search" size={35} color="#fff" />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <GlobalHeaderImage/>
       }
     >
       <ThemedView style={styles.titleContainer}>
@@ -64,40 +42,7 @@ const styles = StyleSheet.create({
     marginBottom: 1,
     width: 100,
   },
-  headerWrapper: {
-    height: 250,
-    width: "100%",
-    position: "relative",
-  },
-  reactLogo: {
-    height: "100%",
-    width: "100%",
-    position: "absolute",
-  },
   feed: {
     width: "100%",
-  },
-  backgroundImage: {
-    height: 250,
-    width: "100%",
-  },
-  iconContainer: {
-    flexDirection: "row",
-    position: "absolute",
-    top: 40,
-    right: 10,
-    alignItems: "center",
-  },
-  icon: {
-    zIndex: 2,
-    backgroundColor: theme.colors.primary,
-    borderRadius: 20,
-    right: 15,
-  },
-  iconSearch: {
-    zIndex: 2,
-    backgroundColor: theme.colors.primary,
-    borderRadius: 17,
-    height: 32,
-  },
+  }
 });
