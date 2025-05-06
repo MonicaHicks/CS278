@@ -1,16 +1,12 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import theme from "@/assets/theme";
+import { StyleSheet } from "react-native";
 import Feed from "@/components/Feed";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function HomeScreen() {
-  const router = useRouter();
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}

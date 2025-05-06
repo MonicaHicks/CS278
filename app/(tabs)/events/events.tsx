@@ -1,11 +1,11 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import theme from "@/assets/theme";
 import Feed from "@/components/Feed";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useState } from "react";
+import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function HomeScreen() {
   const [view, setView] = useState<"myEvents" | "upcoming">("myEvents");
@@ -14,10 +14,7 @@ export default function HomeScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
-        <Image
-          source={require("@/assets/images/Stanford_Oval.png")}
-          style={styles.reactLogo}
-        />
+        <GlobalHeaderImage/>
       }
     >
       <View style={theme.toggleContainer}>
@@ -76,24 +73,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 1,
-    width: 100,
-  },
-  reactLogo: {
-    height: "100%",
-    width: "100%",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
   feed: {
     width: "100%",
   },

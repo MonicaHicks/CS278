@@ -1,13 +1,11 @@
 import theme from "@/assets/theme";
-import FriendList from "@/components/FriendList";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Image, StyleSheet, TextInput, View } from "react-native";
+import { TextInput } from "react-native";
 import { sampleUser } from "../../components/types";
 import SearchList from "@/components/SearchList";
-
-const Separator = () => <View style={styles.separator} />;
+import GlobalHeaderImage from "@/components/GlobalHeaderImage";
 
 export default function ProfileScreen() {
     // Ger user data from the server
@@ -16,10 +14,7 @@ export default function ProfileScreen() {
         <ParallaxScrollView
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
         headerImage={
-            <Image
-            source={require("@/assets/images/Stanford_Oval.png")}
-            style={styles.reactLogo}
-            />
+            <GlobalHeaderImage/>
         }
         >
         <ThemedView>
@@ -36,17 +31,3 @@ export default function ProfileScreen() {
         </ParallaxScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-  reactLogo: {
-    height: "100%",
-    width: "100%",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-  separator: {
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-});
