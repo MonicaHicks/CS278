@@ -7,7 +7,7 @@ import theme from '@/assets/theme';
 export default function BackButton() {
   const router = useRouter();
   // Set the back button to be visible if the user can go back
-  let isVisible = router.canGoBack();
+  const [isVisible, setIsVisible] = useState(router.canGoBack());
 
   return (
     <View style={styles.iconContainer}>
@@ -17,6 +17,7 @@ export default function BackButton() {
           onPress={() => {
             // Navigate to the previous screen
             router.back();
+            setIsVisible(router.canGoBack());
           }}
         >
           <Ionicons name="arrow-back" size={40} color="#fff" />

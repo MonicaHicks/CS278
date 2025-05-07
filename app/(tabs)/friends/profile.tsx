@@ -30,7 +30,7 @@ export default function ProfileScreen() {
         <ThemedText
           style={[theme.typography.subtitle, { alignItems: 'center', gap: 8, marginBottom: 10 }]}
         >
-          Upcomping Events
+          {user.name}'s activity
         </ThemedText>
         <View style={theme.toggleContainer}>
           <TouchableOpacity
