@@ -1,14 +1,14 @@
+import theme from '@/assets/theme';
 import Feed from '@/components/Feed';
 import FollowButton from '@/components/FollowButton';
+import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import ProfileHeader from '@/components/ProfileHeader';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { sampleUser } from '../../../components/types';
-import theme from '@/assets/theme';
-import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { sampleUser } from '../../../components/types';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -69,13 +69,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <ThemedView style={styles.feed}>
-          {view === 'upcomingEvents' ? (
-            <View>
-              <Feed />
-            </View>
-          ) : (
-            <View></View>
-          )}
+          {view === 'upcomingEvents' ? <Feed filter="upcoming" /> : <Feed filter="past" />}
         </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
