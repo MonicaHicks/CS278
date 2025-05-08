@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
 import Feed from '@/components/Feed';
+import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import GlobalHeaderImage from '@/components/GlobalHeaderImage';
+import { StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
   return (
@@ -18,7 +18,7 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}></ThemedView>
       <ThemedView style={styles.feed}>
-        <Feed />
+        <Feed filter="upcoming" />
       </ThemedView>
     </ParallaxScrollView>
   );
