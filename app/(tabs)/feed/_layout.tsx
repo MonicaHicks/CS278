@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import React from 'react';
 
-export default function FriendsLayout() {
+export default function FeedLayout() {
   return (
     <React.Fragment>
       <Stack
