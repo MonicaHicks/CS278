@@ -1,7 +1,9 @@
 // components/EventPage.tsx
+import { mockComments } from "@/assets/data/mockComments";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import theme from "../assets/theme";
+import CommentItem from "./Comment";
 import ParallaxScrollView from "./ParallaxScrollView";
 import RSVPButton from "./RSVPButton";
 import { ThemedText } from "./ThemedText";
@@ -19,6 +21,8 @@ export default function EventPage({ item }: { item: Event }) {
     minute: "2-digit",
     hour12: true,
   });
+
+  const eventComments = mockComments.filter((c) => c.eventId === item.id);
 
   return (
     <ParallaxScrollView
@@ -66,6 +70,18 @@ export default function EventPage({ item }: { item: Event }) {
         </View>
 
         <RSVPButton />
+        <View style={styles.commentSection}>
+          <ThemedText style={theme.typography.subtitle}>Comments</ThemedText>
+          {eventComments.length === 0 ? (
+            <ThemedText style={theme.typography.caption}>
+              No comments yet.
+            </ThemedText>
+          ) : (
+            eventComments.map((comment) => (
+              <CommentItem comment={comment} key={comment.id} />
+            ))
+          )}
+        </View>
       </View>
     </ParallaxScrollView>
   );
@@ -89,5 +105,9 @@ const styles = StyleSheet.create({
   details: {
     alignItems: "center",
     gap: 6,
+  },
+  commentSection: {
+    marginTop: 24,
+    gap: 12,
   },
 });
