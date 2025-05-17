@@ -3,6 +3,8 @@ import { fetchEvents } from '@/firestore';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import EventComponent from './Event';
+import { EventType } from './types';
 
 type FeedProps = {
   filter: 'upcoming' | 'past';
@@ -27,7 +29,7 @@ export default function Feed({ filter }: FeedProps) {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         {events.map((item) => (
-          <EventType item={item} key={item.id} />
+          <EventComponent item={item} key={item.id} />
         ))}
       </SafeAreaView>
     </SafeAreaProvider>

@@ -30,8 +30,8 @@ export const sampleUser: User = {
   following: ['friend1', 'friend2', 'friend3'],
 };
 
-export type Event = {
-  id: string; // Unique identifier for the event
+export type EventType = {
+  id?: string; // Unique identifier for the event
   hostName: string; // Name of the club
   hostImage: string; // URL to the club's profile image
   eventTitle: string; // Name of the event
@@ -44,7 +44,7 @@ export type Event = {
 
 const dummyDate = new Date(1714590600000);
 
-export const sampleEvents: Event[] = [
+export const sampleEvents: EventType[] = [
   {
     id: '3BStOcn4LjJHwD0zrcBZ',
     hostName: 'CS198',
