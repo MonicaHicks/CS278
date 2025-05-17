@@ -7,7 +7,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "module": "esnext"
+    "module": "node16",
   },
   "include": [
     "**/*.ts",
