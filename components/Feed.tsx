@@ -1,26 +1,33 @@
 // components/Feed.tsx
-import { mockEvents } from '@/assets/data/mockEvents';
-import React from 'react';
+import { fetchEvents } from '@/firestore';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Event from './Event';
 
 type FeedProps = {
   filter: 'upcoming' | 'past';
 };
 
 export default function Feed({ filter }: FeedProps) {
+  const [events, setEvents] = useState<EventType[]>([]);
   const now = new Date();
 
-  const filteredEvents = mockEvents.filter((event) =>
-    filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now,
-  );
+  useEffect(() => {
+    const load = async () => {
+      const allEvents = await fetchEvents();
+      const filtered = allEvents.filter((event) =>
+        filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now,
+      );
+      setEvents(filtered);
+    };
+    load();
+  }, [filter]);
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        {filteredEvents.map((item) => (
-          <Event item={item} key={item.id} />
+        {events.map((item) => (
+          <EventType item={item} key={item.id} />
         ))}
       </SafeAreaView>
     </SafeAreaProvider>

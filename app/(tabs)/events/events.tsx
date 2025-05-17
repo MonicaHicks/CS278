@@ -1,11 +1,11 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import theme from '@/assets/theme';
 import Feed from '@/components/Feed';
+import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
-import GlobalHeaderImage from '@/components/GlobalHeaderImage';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
@@ -55,10 +55,12 @@ export default function HomeScreen() {
 
       <ThemedView style={styles.feed}>
         {view === 'upcomingEvents' ? (
-          <View></View>
+          <View>
+            <Feed filter="upcoming" />
+          </View>
         ) : (
           <View>
-            <Feed />
+            <Feed filter="past" />
           </View>
         )}
       </ThemedView>

@@ -1,12 +1,12 @@
 // lib/firestore.ts
-import { Event } from '@/components/types';
+import { EventType } from '@/components/types';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
-export async function fetchEvents(): Promise<Event[]> {
+export async function fetchEvents(): Promise<EventType[]> {
   const querySnapshot = await getDocs(collection(db, 'events'));
 
-  const events: Event[] = querySnapshot.docs.map((doc) => {
+  const events: EventType[] = querySnapshot.docs.map((doc) => {
     const data = doc.data();
 
     return {
