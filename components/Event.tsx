@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { Image, Pressable, View } from "react-native";
-import theme from "../assets/theme";
-import EventModal from "./EventModal";
-import { ThemedText } from "./ThemedText";
-import { ThemedView } from "./ThemedView";
+import { useState } from 'react';
+import { Image, Pressable, View } from 'react-native';
+import theme from '../assets/theme';
+import EventModal from './EventModal';
+import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 
-export default function Event({
+export default function EventComponent({
   item,
 }: {
   item: {
     // I hope to have images from firebase later
-    id: string;
+    id?: string;
     hostName: string;
     hostImage?: string; // placeholder for now
     eventTitle: string;
@@ -22,13 +22,13 @@ export default function Event({
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const formattedDateTime = `${item.dateTime.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  })} · ${item.dateTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
+  const formattedDateTime = `${item.dateTime.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  })} · ${item.dateTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
     hour12: true,
   })}`;
 
@@ -41,7 +41,7 @@ export default function Event({
               source={
                 item.hostImage
                   ? { uri: item.hostImage }
-                  : require("../assets/images/Placeholder_Club.png")
+                  : require('../assets/images/Placeholder_Club.png')
               }
               style={theme.profilePic}
             />
@@ -50,10 +50,8 @@ export default function Event({
               {item.hostName}
             </ThemedText>
           </View>
-          <View style={{ alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <ThemedText style={theme.typography.eventTitle}>
-              {item.eventTitle}
-            </ThemedText>
+          <View style={{ alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <ThemedText style={theme.typography.eventTitle}>{item.eventTitle}</ThemedText>
             <ThemedText style={theme.typography.body}>
               {formattedDateTime} · {item.location}
             </ThemedText>
@@ -61,11 +59,7 @@ export default function Event({
         </ThemedView>
       </Pressable>
 
-      <EventModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        item={item}
-      />
+      <EventModal visible={modalVisible} onClose={() => setModalVisible(false)} item={item} />
     </>
   );
 }
