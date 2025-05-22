@@ -1,14 +1,16 @@
 // lib/firestore.ts
 import { EventType } from '@/components/types';
 import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
+  addDoc,
   arrayRemove,
+  arrayUnion,
+  collection,
+  deleteDoc,
+  doc,
   DocumentReference,
+  getDoc,
+  getDocs,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
@@ -141,3 +143,110 @@ export async function handleUnRSVP(userId: string, eventId: string): Promise<boo
   console.log('Un-RSVP successful');
   return true; // Un-RSVP successful
 }
+
+// Add a comment to an event
+export async function addComment(
+  userId: string,
+  eventId: string,
+  content: string,
+): Promise<boolean> {
+  try {
+    // Generate a new document with a random ID using addDoc
+    const commentRef = await addDoc(collection(db, 'comments'), {
+      userId,
+      eventId,
+      content,
+      timestamp: new Date(),
+      likes: [],
+    });
+
+    // Add the comment ID to the event's 'comments' field
+    const eventRef = doc(db, 'events', eventId);
+    await updateDoc(eventRef, {
+      comments: arrayUnion(commentRef.id),
+    });
+
+    console.log('Comment added successfully');
+    return true;
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    return false;
+  }
+}
+
+// Remove a comment from an event
+export async function removeComment(
+  userId: string,
+  eventId: string,
+  commentId: string,
+): Promise<boolean> {
+  try {
+    // Delete the comment document
+    const commentRef = doc(db, 'comments', commentId);
+    await deleteDoc(commentRef); // This is the correct way to delete a document in Firestore
+
+    // Remove the comment ID from the event's 'comments' field
+    const eventRef = doc(db, 'events', eventId);
+    await updateDoc(eventRef, {
+      comments: arrayRemove(commentId),
+    });
+
+    console.log('Comment removed successfully');
+    return true;
+  } catch (error) {
+    console.error('Error removing comment:', error);
+    return false;
+  }
+}
+
+// // Create event
+// const createEvent = async (userId: string, event: EventType) => {
+//   try {
+//     const eventRef = firebase.firestore().collection('Events').doc();
+//     const newEvent = {
+//       ...event,
+//       hostName: userId, // Store the userId as hostName
+//       attendees: [userId], // Initially, the user is the first attendee
+//       comments: [],
+//     };
+//     await eventRef.set(newEvent);
+
+//     console.log('Event created');
+//   } catch (error) {
+//     console.error('Error creating event:', error);
+//   }
+// };
+
+// // Edit event
+// const editEvent = async (userId: string, eventId: string, updatedEvent: EventType) => {
+//   try {
+//     const eventRef = firebase.firestore().collection('Events').doc(eventId);
+//     const event = await eventRef.get();
+
+//     if (event.data()?.hostName !== userId) {
+//       throw 'User is not the host';
+//     }
+
+//     await eventRef.update(updatedEvent);
+//     console.log('Event updated');
+//   } catch (error) {
+//     console.error('Error editing event:', error);
+//   }
+// };
+
+// // Delete event
+// const deleteEvent = async (userId: string, eventId: string) => {
+//   try {
+//     const eventRef = firebase.firestore().collection('Events').doc(eventId);
+//     const event = await eventRef.get();
+
+//     if (event.data()?.hostName !== userId) {
+//       throw 'User is not the host';
+//     }
+
+//     await eventRef.delete();
+//     console.log('Event deleted');
+//   } catch (error) {
+//     console.error('Error deleting event:', error);
+//   }
+// };
