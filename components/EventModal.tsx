@@ -12,7 +12,7 @@ import {
 import theme from '../assets/theme';
 import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
-import { Event } from './types';
+import { EventType } from './types';
 
 export default function EventModal({
   visible,
@@ -21,7 +21,7 @@ export default function EventModal({
 }: {
   visible: boolean;
   onClose: (event?: GestureResponderEvent) => void;
-  item: Event;
+  item: EventType;
 }) {
   const router = useRouter();
   const formattedDate = `${item.dateTime.toLocaleDateString('en-US', {
@@ -99,7 +99,7 @@ export default function EventModal({
               <ThemedText style={theme.typography.subtitle}>{formattedDate}</ThemedText>
               <ThemedText style={theme.typography.subtitle}>Location: {item.location}</ThemedText>
             </View>
-            <RSVPButton />
+            <RSVPButton item={item} />
           </View>
         </View>
       </TouchableWithoutFeedback>

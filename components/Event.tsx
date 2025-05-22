@@ -4,22 +4,9 @@ import theme from '../assets/theme';
 import EventModal from './EventModal';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
+import { EventType } from './types';
 
-export default function EventComponent({
-  item,
-}: {
-  item: {
-    // I hope to have images from firebase later
-    id?: string;
-    hostName: string;
-    hostImage?: string; // placeholder for now
-    eventTitle: string;
-    hostFlyer?: string; // placeholder for now
-    attendees: string[]; // placeholder for now
-    dateTime: Date;
-    location: string;
-  };
-}) {
+export default function EventComponent({ item }: { item: EventType }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const formattedDateTime = `${item.dateTime.toLocaleDateString('en-US', {

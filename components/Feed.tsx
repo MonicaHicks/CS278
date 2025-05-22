@@ -16,6 +16,7 @@ export default function Feed({ filter }: FeedProps) {
 
   useEffect(() => {
     const load = async () => {
+      // Should add props depending on if this is the user's feed or a public feed
       const allEvents = await fetchEvents();
       const filtered = allEvents.filter((event) =>
         filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now,

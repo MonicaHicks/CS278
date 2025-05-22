@@ -30,7 +30,7 @@ export default function ProfileScreen() {
         >
           {user.name}'s activity
         </ThemedText>
-        <Feed />
+        <Feed filter="upcoming" />
       </ThemedView>
     </ParallaxScrollView>
   );
