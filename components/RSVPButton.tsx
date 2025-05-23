@@ -2,17 +2,17 @@ import React from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import theme from '../assets/theme';
 import { ThemedText } from './ThemedText';
-import { auth } from '@/firebaseConfig';
+import { getUserId } from '@/database/authHooks';
 import { EventType } from './types';
-import { isRSVPed, handleRSVP, handleUnRSVP } from '@/firestore';
+import { isRSVPed, handleRSVP, handleUnRSVP } from '@/database/rsvpHooks';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 
 export default function RSVPButton({ item }: { item: EventType }) {
-  const user = auth.currentUser;
+  const userId = getUserId();
 
   // if the user is not logged in, tell them to login to RSVP
-  if (!user) {
+  if (!userId) {
     const router = useRouter();
     return (
       <View style={styles.container}>
@@ -34,11 +34,11 @@ export default function RSVPButton({ item }: { item: EventType }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    isRSVPed(user.uid, item.id!).then((status) => {
+    isRSVPed(userId, item.id!).then((status) => {
       setIsRSVP(status);
       setLoading(false);
     });
-  }, [item.id, user.uid]);
+  }, [item.id, userId]);
 
   const handlePress = async () => {
     if (isRSVP === null || error) {
@@ -48,12 +48,12 @@ export default function RSVPButton({ item }: { item: EventType }) {
     setLoading(true);
     try {
       if (!isRSVP) {
-        await handleRSVP(user.uid, item.id!);
+        await handleRSVP(userId, item.id!);
       } else {
-        await handleUnRSVP(user.uid, item.id!);
+        await handleUnRSVP(userId, item.id!);
       }
       // Re-fetch and confirm the RSVP status
-      const updatedStatus = await isRSVPed(user.uid, item.id!);
+      const updatedStatus = await isRSVPed(userId, item.id!);
       setIsRSVP(updatedStatus);
     } catch (err) {
       Alert.alert('Failed to update RSVP status.');

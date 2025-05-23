@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import theme from '../assets/theme';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/firebaseConfig'; // Adjust the import path as necessary
+import { signIn } from '@/database/authHooks';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -15,7 +14,7 @@ export default function LoginPage() {
       return;
     }
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
+      const user = await signIn(email, password);
       if (user) router.replace('/(tabs)/feed/feed');
     } catch (error) {
       console.error('Login error:', error);
