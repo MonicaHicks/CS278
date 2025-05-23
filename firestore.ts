@@ -1,5 +1,5 @@
 // lib/firestore.ts
-import { EventType } from '@/components/types';
+import { Comment, EventType } from '@/components/types';
 import {
   addDoc,
   arrayRemove,
@@ -10,7 +10,9 @@ import {
   DocumentReference,
   getDoc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
@@ -197,6 +199,34 @@ export async function removeComment(
     console.error('Error removing comment:', error);
     return false;
   }
+}
+
+// Fetch comments for an event
+export async function fetchComments(eventId: string): Promise<Comment[]> {
+  const commentsRef = collection(db, 'comments');
+  const q = query(commentsRef, where('eventId', '==', eventId)); // Filter by eventId
+
+  const querySnapshot = await getDocs(q);
+
+  // Map Firestore documents to the Comment type
+  const comments: Comment[] = querySnapshot.docs.map((doc) => {
+    const data = doc.data() as Comment; // Cast doc.data() to DocumentData (optional)
+
+    // Manually cast the data to Comment type
+    const comment: Comment = {
+      id: doc.id, // Firestore document ID
+      userId: data.userId || '', // User ID who made the comment
+      eventId: data.eventId || '', // Event ID the comment is related to
+      content: data.content || '', // Comment content
+      timestamp: data.timestamp ? data.timestamp : new Date(), // Firestore timestamp to JavaScript Date
+      parentId: data.parentId || undefined, // Parent comment (if it's a reply)
+      likes: data.likes || [], // List of user IDs who liked the comment
+    };
+
+    return comment;
+  });
+
+  return comments;
 }
 
 // // Create event

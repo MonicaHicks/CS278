@@ -1,15 +1,28 @@
 // components/EventPage.tsx
-import { mockComments } from '@/assets/data/mockComments';
-import React from 'react';
+import { fetchComments } from '@/firestore';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import theme from '../assets/theme';
 import CommentItem from './Comment';
 import ParallaxScrollView from './ParallaxScrollView';
 import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
-import { EventType } from './types';
+import { Comment, EventType } from './types';
 
 export default function EventPage({ item }: { item: EventType }) {
+  const [eventComments, setEventComments] = useState<Comment[]>([]); // Manage comments state
+
+  useEffect(() => {
+    const loadComments = async () => {
+      if (item.id !== null && item.id !== undefined) {
+        // Check that item.id is valid
+        const comments = await fetchComments(item.id); // Fetch comments from Firestore
+        setEventComments(comments);
+      }
+    };
+    loadComments();
+  }, [item.id]); // Depend on item.id
+
   const formattedDate = item.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
@@ -21,8 +34,6 @@ export default function EventPage({ item }: { item: EventType }) {
     minute: '2-digit',
     hour12: true,
   });
-
-  const eventComments = mockComments.filter((c) => c.eventId === item.id);
 
   return (
     <ParallaxScrollView
