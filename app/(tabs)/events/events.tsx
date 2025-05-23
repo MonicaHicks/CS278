@@ -6,8 +6,10 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { auth } from '@/firebaseConfig';
 
 export default function HomeScreen() {
+  const user = auth.currentUser!; // Guarantee that user is not null
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
 
   return (
@@ -56,11 +58,11 @@ export default function HomeScreen() {
       <ThemedView style={styles.feed}>
         {view === 'upcomingEvents' ? (
           <View>
-            <Feed filter="upcoming" />
+            <Feed filter="upcoming" userId={user.uid} />
           </View>
         ) : (
           <View>
-            <Feed filter="past" />
+            <Feed filter="past" userId={user.uid} />
           </View>
         )}
       </ThemedView>

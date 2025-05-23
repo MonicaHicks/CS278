@@ -43,14 +43,36 @@ export async function fetchEvents(): Promise<EventType[]> {
   return events;
 }
 
-//isRSVPed
-export async function isRSVPed(userId: string, eventId: string): Promise<boolean> {
+// getEvent
+export async function getEvent(eventId: string): Promise<EventType | null> {
   const eventRef = doc(db, 'events', eventId);
   const eventDoc = await getDoc(eventRef);
   if (eventDoc.exists()) {
     const eventData = eventDoc.data();
+    return {
+      id: eventDoc.id,
+      hostName: eventData.hostName,
+      hostImage: eventData.hostImage,
+      eventTitle: eventData.eventTitle,
+      hostFlyer: eventData.hostFlyer,
+      location: eventData.location,
+      dateTime: eventData.dateTime.toDate(), // Firestore Timestamp -> JS Date
+      attendees: eventData.attendees || [],
+      comments: eventData.comments || [],
+    };
+  }
+  return null; // Event does not exist
+}
+
+//isRSVPed
+export async function isRSVPed(userId: string, eventId: string): Promise<boolean> {
+  const userRef = doc(db, 'users', userId);
+  const eventRef = doc(db, 'events', eventId);
+  const eventDoc = await getDoc(eventRef);
+  if (eventDoc.exists() && userRef) {
+    const eventData = eventDoc.data();
     const attendees = eventData.attendees || [];
-    return attendees.includes(userId);
+    return isDocumentReferenceInList(userRef, attendees);
   }
   return false;
 }
@@ -95,11 +117,10 @@ export async function handleRSVP(userId: string, eventId: string): Promise<boole
   await updateDoc(userRef, {
     events: arrayUnion(eventRef),
   });
-  console.log('RSVP successful');
   return true; // RSVP successful
 }
 
-//handleUnRSVP
+// handleUnRSVP
 export async function handleUnRSVP(userId: string, eventId: string): Promise<boolean> {
   // Validate the userId and eventId
   const eventRef = doc(db, 'events', eventId);
@@ -120,13 +141,10 @@ export async function handleUnRSVP(userId: string, eventId: string): Promise<boo
   const attendees = eventData.attendees || [];
   const userData = userDoc.data();
   const events = userData.events || [];
-  console.log('Attendees:', attendees);
-  console.log('Events:', events);
   if (
     !isDocumentReferenceInList(userRef, attendees) ||
     !isDocumentReferenceInList(eventRef, events)
   ) {
-    console.log('User is not RSVPed');
     return false; // User is not RSVPed
   }
 
@@ -138,6 +156,85 @@ export async function handleUnRSVP(userId: string, eventId: string): Promise<boo
   await updateDoc(userRef, {
     events: arrayRemove(eventRef),
   });
-  console.log('Un-RSVP successful');
   return true; // Un-RSVP successful
+}
+
+// getFollowers - probably want to change the return type to a list of user objects
+// Return a list of reference IDs to a given user's followers
+export async function getFollowers(userId: string): Promise<string[]> {
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    const followers = userData.followers || [];
+    return followers.map((docRef: DocumentReference) => docRef.id);
+  }
+  console.log('User does not exist');
+  return [];
+}
+
+// getFollowing
+// Return a list of reference IDs to a given user's following
+export async function getFollowing(userId: string): Promise<string[]> {
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    const following = userData.following || [];
+    return following.map((docRef: DocumentReference) => docRef.id);
+  }
+  console.log('User does not exist');
+  return [];
+}
+
+// getRsvps
+// Return a list of reference IDs to a given user's RSVPed events
+export async function getRsvps(userId: string): Promise<EventType[]> {
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    const events = userData.events || [];
+    // Convert to EventType and return
+    const eventData = await Promise.all(
+      events.map(async (docRef: DocumentReference) => {
+        const eventDoc = await getDoc(docRef);
+
+        // If the document exists, convert it to EventType
+        if (eventDoc.exists()) {
+          const eventData = eventDoc.data();
+          return {
+            id: eventDoc.id,
+            hostName: eventData.displayName,
+            hostImage: eventData.image,
+            eventTitle: eventData.eventTitle,
+            hostFlyer: eventData.hostFlyer,
+            location: eventData.location,
+            dateTime: eventData.dateTime.toDate(), // Firestore Timestamp -> JS Date
+            hostId: eventData.hostId,
+            attendees: eventData.attendees || [],
+            comments: eventData.comments || [],
+          };
+        }
+        return null; // Handle the case where the document does not exist
+      }),
+    );
+    return eventData.filter((event) => event !== null) as EventType[];
+  }
+  console.log('User does not exist');
+  return [];
+}
+
+// getComments
+// Get the list of comments under a given event
+export async function getComments(eventId: string): Promise<string[]> {
+  const eventRef = doc(db, 'events', eventId);
+  const eventDoc = await getDoc(eventRef);
+  if (eventDoc.exists()) {
+    const eventData = eventDoc.data();
+    const comments = eventData.comments || [];
+    return comments.map((docRef: DocumentReference) => docRef.id);
+  }
+  console.log('Event does not exist');
+  return [];
 }
