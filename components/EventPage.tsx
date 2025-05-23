@@ -1,28 +1,13 @@
-// components/EventPage.tsx
-import { fetchComments } from '@/firestore';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import theme from '../assets/theme';
-import CommentItem from './Comment';
+import Comments from './Comment'; // Ensure the correct component is imported (Comment vs Comments)
 import ParallaxScrollView from './ParallaxScrollView';
 import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
-import { Comment, EventType } from './types';
+import { EventType } from './types';
 
 export default function EventPage({ item }: { item: EventType }) {
-  const [eventComments, setEventComments] = useState<Comment[]>([]); // Manage comments state
-
-  useEffect(() => {
-    const loadComments = async () => {
-      if (item.id !== null && item.id !== undefined) {
-        // Check that item.id is valid
-        const comments = await fetchComments(item.id); // Fetch comments from Firestore
-        setEventComments(comments);
-      }
-    };
-    loadComments();
-  }, [item.id]); // Depend on item.id
-
   const formattedDate = item.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
@@ -34,6 +19,7 @@ export default function EventPage({ item }: { item: EventType }) {
     minute: '2-digit',
     hour12: true,
   });
+  const eventID = item.id ? item.id : '';
 
   return (
     <ParallaxScrollView
@@ -69,14 +55,9 @@ export default function EventPage({ item }: { item: EventType }) {
         </View>
 
         <RSVPButton item={item} />
-        <View style={styles.commentSection}>
-          <ThemedText style={theme.typography.subtitle}>Comments</ThemedText>
-          {eventComments.length === 0 ? (
-            <ThemedText style={theme.typography.caption}>No comments yet.</ThemedText>
-          ) : (
-            eventComments.map((comment) => <CommentItem comment={comment} key={comment.id} />)
-          )}
-        </View>
+
+        {/* Pass eventComments to the Comments component */}
+        <Comments eventID={eventID} />
       </View>
     </ParallaxScrollView>
   );
@@ -100,9 +81,5 @@ const styles = StyleSheet.create({
   details: {
     alignItems: 'center',
     gap: 6,
-  },
-  commentSection: {
-    marginTop: 24,
-    gap: 12,
   },
 });

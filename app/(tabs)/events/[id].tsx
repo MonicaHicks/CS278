@@ -1,9 +1,10 @@
 // app/(tabs)/events/[id].tsx
 import EventPage from '@/components/EventPage';
 import { EventType } from '@/components/types';
+import { getEvent } from '@/firestore';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 export const options = {
   href: null,

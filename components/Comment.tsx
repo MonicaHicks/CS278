@@ -1,140 +1,71 @@
-import { addComment, fetchComments } from '@/firestore'; // import the necessary Firestore functions
+import theme from '@/assets/theme';
+import { addComment, fetchComments } from '@/firestore';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import theme from '../assets/theme';
-import CommentItem from './CommentItem';
-import ParallaxScrollView from './ParallaxScrollView';
-import RSVPButton from './RSVPButton';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import CommentItem from './CommentItem'; // Assuming you already have a CommentItem component
 import { ThemedText } from './ThemedText';
-import { Comment, EventType } from './types';
+import { Comment } from './types';
 
-export default function EventPage({ item }: { item: EventType }) {
+type CommentsProps = {
+  eventID: string; // Accept eventID as a prop
+};
+
+export default function Comments({ eventID }: CommentsProps) {
   const [eventComments, setEventComments] = useState<Comment[]>([]); // Manage comments state
   const [newComment, setNewComment] = useState<string>(''); // Manage new comment input
-
-  const formattedDate = item.dateTime.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  const formattedTime = item.dateTime.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
 
   // Fetch comments for the event when the component mounts
   useEffect(() => {
     const loadComments = async () => {
-      if (item.id !== null && item.id !== undefined) {
-        const comments = await fetchComments(item.id);
+      if (eventID) {
+        const comments = await fetchComments(eventID); // Fetch comments from Firestore using eventID
         setEventComments(comments);
       }
     };
     loadComments();
-  }, [item.id]); // Depend on item.id
+  }, [eventID]); // Depend on eventID
 
   // Handle comment submission
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // Don't submit empty comments
 
-    if (!item.id) {
-      return;
-    }
+    const userId = 'currentUserId'; // Replace with actual user ID logic
 
-    const userId = 'currentUserId'; // Replace this with actual user ID logic
-    const eventId = item.id;
-
-    // Add comment to Firestore
-    const success = await addComment(userId, eventId, newComment);
+    // Add comment to Firestore (you may need to implement addComment if it's not already in place)
+    const success = await addComment(userId, eventID, newComment);
 
     if (success) {
       // Refresh comments after adding the new comment
-      const updatedComments = await fetchComments(eventId);
+      const updatedComments = await fetchComments(eventID);
       setEventComments(updatedComments);
       setNewComment(''); // Clear the comment input field
     }
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#FDF8F3', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={
-            item.hostFlyer ? { uri: item.hostFlyer } : require('../assets/images/Sample_Flyer.png')
-          }
-          style={styles.flyer}
-        />
-      }
-    >
-      <View style={styles.content}>
-        <Text>Monica</Text>
-        <View style={styles.hostInfo}>
-          <Image
-            source={
-              item.hostImage
-                ? { uri: item.hostImage }
-                : require('../assets/images/Placeholder_Club.png')
-            }
-            style={theme.profilePic}
-          />
-          <ThemedText style={theme.typography.eventTitle}>{item.hostName}</ThemedText>
-        </View>
+    <View style={styles.commentSection}>
+      <ThemedText style={styles.title}>Comments</ThemedText>
+      {eventComments.length === 0 ? (
+        <ThemedText style={styles.caption}>No comments yet.</ThemedText>
+      ) : (
+        eventComments.map((comment) => <CommentItem comment={comment} key={comment.id} />)
+      )}
 
-        <ThemedText style={theme.typography.title}>{item.eventTitle}</ThemedText>
+      <TextInput
+        style={styles.commentInput}
+        placeholder="Add a comment..."
+        value={newComment}
+        onChangeText={setNewComment}
+      />
 
-        <View style={styles.details}>
-          <ThemedText style={theme.typography.subtitle}>{formattedTime}</ThemedText>
-          <ThemedText style={theme.typography.subtitle}>{formattedDate}</ThemedText>
-          <ThemedText style={theme.typography.subtitle}>Location: {item.location}</ThemedText>
-        </View>
-
-        <RSVPButton item={item} />
-
-        {/* Comment Section */}
-        <View style={styles.commentSection}>
-          <ThemedText style={theme.typography.subtitle}>Comments</ThemedText>
-          {eventComments.length === 0 ? (
-            <ThemedText style={theme.typography.caption}>No comments yet.</ThemedText>
-          ) : (
-            eventComments.map((comment) => <CommentItem comment={comment} key={comment.id} />)
-          )}
-          <Text> Monica </Text>
-          {/* Comment input and submit */}
-          <TextInput
-            style={styles.commentInput}
-            placeholder="Add a comment..."
-            value={newComment}
-            onChangeText={setNewComment}
-          />
-          <TouchableOpacity onPress={handleCommentSubmit}>Post Comment</TouchableOpacity>
-        </View>
-      </View>
-    </ParallaxScrollView>
+      <TouchableOpacity onPress={handleCommentSubmit} style={styles.commentButton}>
+        <Text style={styles.commentButtonText}>Post Comment</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  flyer: {
-    width: '100%',
-    height: 240,
-    resizeMode: 'cover',
-  },
-  content: {
-    padding: 20,
-    gap: 16,
-  },
-  hostInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  details: {
-    alignItems: 'center',
-    gap: 6,
-  },
   commentSection: {
     marginTop: 24,
     gap: 12,
@@ -146,5 +77,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     marginBottom: 10,
+    color: '#444',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  caption: {
+    fontSize: 14,
+    color: '#888',
+  },
+  commentButton: {
+    backgroundColor: theme.colors.primary, // Primary color for the button
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%', // Full width to match the input field
+    marginTop: 8,
+  },
+  commentButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
