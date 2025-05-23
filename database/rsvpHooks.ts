@@ -123,8 +123,8 @@ export async function getRsvps(userId: string): Promise<EventType[]> {
           const eventData = eventDoc.data();
           return {
             id: eventDoc.id,
-            hostName: eventData.displayName,
-            hostImage: eventData.image,
+            hostName: eventData.hostName,
+            hostImage: eventData.hostFlyer,
             eventTitle: eventData.eventTitle,
             hostFlyer: eventData.hostFlyer,
             location: eventData.location,

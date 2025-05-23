@@ -6,16 +6,67 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import ProfileHeader from '@/components/ProfileHeader';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { sampleUser } from '../../../components/types';
+import { useState, useEffect } from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { getUser } from '@/database/userHooks';
+import { getUserId } from '@/database/authHooks';
+import { User } from '@/components/types';
 
 const Separator = () => <View style={styles.separator} />;
+// TODO: hide expo header on this page
+
+export const options = {
+  href: null,
+};
 
 export default function ProfileScreen() {
+  const { id } = useLocalSearchParams();
+  const [user, setUser] = useState<User | null>(null);
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
-  // Ger user data from the server
-  let user = sampleUser;
+  const [loading, setLoading] = useState(true);
+
+  // Only render the follow button if the user is not viewing their own profile
+  const userId = getUserId();
+  const stringId = id as string;
+  let isOwnProfile = false;
+  if (userId == stringId) {
+    isOwnProfile = true;
+  }
+
+  // Load user data from server
+  useEffect(() => {
+    setLoading(true);
+    getUser(id as string)
+      .then((result) => {
+        setUser(result);
+      })
+      .catch((error) => {
+        console.error('Error fetching user:', error);
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return (
+      <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <ThemedText>Loading user...</ThemedText>
+      </ThemedView>
+    );
+  }
+
+  if (!user) {
+    return (
+      <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ThemedText>User not found</ThemedText>
+      </ThemedView>
+    );
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -24,13 +75,13 @@ export default function ProfileScreen() {
       <ThemedView>
         <ProfileHeader {...user} />
       </ThemedView>
-      <FollowButton pageUserId={user.id} />
+      {isOwnProfile ? null : <FollowButton pageUserId={id as string} />}
       <Separator />
       <ThemedView>
         <ThemedText
           style={[theme.typography.subtitle, { alignItems: 'center', gap: 8, marginBottom: 10 }]}
         >
-          {user.name}'s activity
+          {isOwnProfile ? 'Your' : user.name + "'s"} activity
         </ThemedText>
         <View style={theme.toggleContainer}>
           <TouchableOpacity
@@ -69,7 +120,11 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <ThemedView style={styles.feed}>
-          {view === 'upcomingEvents' ? <Feed filter="upcoming" /> : <Feed filter="past" />}
+          {view === 'upcomingEvents' ? (
+            <Feed filter="upcoming" userId={id as string} />
+          ) : (
+            <Feed filter="past" userId={id as string} />
+          )}
         </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
