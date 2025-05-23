@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { getUser } from '@/database/userHooks';
+import { getUserId } from '@/database/authHooks';
 import { User } from '@/components/types';
 
 const Separator = () => <View style={styles.separator} />;
@@ -21,10 +22,17 @@ export const options = {
 
 export default function ProfileScreen() {
   const { id } = useLocalSearchParams();
-  console.log('User ID:', id);
   const [user, setUser] = useState<User | null>(null);
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
   const [loading, setLoading] = useState(true);
+
+  // Only render the follow button if the user is not viewing their own profile
+  const userId = getUserId();
+  const stringId = id as string;
+  let isOwnProfile = false;
+  if (userId == stringId) {
+    isOwnProfile = true;
+  }
 
   // Load user data from server
   useEffect(() => {
@@ -67,13 +75,13 @@ export default function ProfileScreen() {
       <ThemedView>
         <ProfileHeader {...user} />
       </ThemedView>
-      <FollowButton isFollowing={false} />
+      {isOwnProfile ? null : <FollowButton pageUserId={id as string} />}
       <Separator />
       <ThemedView>
         <ThemedText
           style={[theme.typography.subtitle, { alignItems: 'center', gap: 8, marginBottom: 10 }]}
         >
-          {user.name}'s activity
+          {isOwnProfile ? 'Your' : user.name + "'s"} activity
         </ThemedText>
         <View style={theme.toggleContainer}>
           <TouchableOpacity
@@ -112,7 +120,11 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <ThemedView style={styles.feed}>
-          {view === 'upcomingEvents' ? <Feed filter="upcoming" /> : <Feed filter="past" />}
+          {view === 'upcomingEvents' ? (
+            <Feed filter="upcoming" userId={id as string} />
+          ) : (
+            <Feed filter="past" userId={id as string} />
+          )}
         </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
