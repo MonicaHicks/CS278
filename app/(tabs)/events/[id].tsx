@@ -1,7 +1,6 @@
 // app/(tabs)/events/[id].tsx
 import EventPage from '@/components/EventPage';
 import { EventType } from '@/components/types';
-import { fetchEvents } from '@/firestore';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -13,26 +12,35 @@ export const options = {
 export default function EventPageRoute() {
   const { id } = useLocalSearchParams();
   const [event, setEvent] = useState<EventType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const allEvents = await fetchEvents();
-        const foundEvent = allEvents.find((event) => event.id === id);
-        setEvent(foundEvent || null);
-      } catch (error) {
-        console.error('Error fetching events:', error);
+    setLoading(true);
+    getEvent(id as string)
+      .then((result) => {
+        setEvent(result);
+      })
+      .catch((error) => {
+        console.error('Error fetching event:', error);
         setEvent(null);
-      }
-    };
-
-    load();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
-  // const event = fetchEvents.find((e) => e.id === id);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+        <Text>Loading event...</Text>
+      </View>
+    );
+  }
 
   if (!event) {
     return (
-      <View>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Event not found</Text>
       </View>
     );
