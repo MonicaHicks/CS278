@@ -24,7 +24,7 @@ export default function ProfileScreen() {
       <ThemedView>
         <ProfileHeader {...user} />
       </ThemedView>
-      <FollowButton isFollowing={false} />
+      <FollowButton pageUserId={user.id} />
       <Separator />
       <ThemedView>
         <ThemedText

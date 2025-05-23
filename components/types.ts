@@ -91,3 +91,12 @@ export type Comment = {
   parentId?: string; // ID of the parent comment if it's a reply
   likes: string[]; // List of user IDs who liked the comment
 };
+
+// A shortened version of the user schema for the friend list
+export type Friend = {
+  id: string; // Unique identifier for the friend
+  name: string; // Name of the friend
+  displayName: string; // Display name of the friend
+  image: string; // URL to the friend's profile image
+  events: EventType[]; // List of events the friend is or has attending
+};

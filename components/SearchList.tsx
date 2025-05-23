@@ -34,7 +34,7 @@ const FRIENDS = [
   },
 ];
 
-export default function FriendList() {
+export default function SearchList() {
   return (
     <ThemedView>
       {FRIENDS.map((friend) => (
