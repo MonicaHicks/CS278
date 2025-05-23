@@ -35,23 +35,33 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
 }
 
 function EventList({ eventsAttending }: { eventsAttending: EventType[] }) {
+  const router = useRouter();
   // Only list the most revent 3 events
   return (
     <ThemedView>
       {eventsAttending.map((event) => (
-        <ThemedView
+        <TouchableOpacity
           key={event.id}
-          style={{
-            marginTop: 6,
-            marginLeft: 12,
-            marginBottom: 6,
-            gap: 8,
-            flexDirection: 'row' as const,
+          onPress={() => {
+            console.log('Event pressed');
+            // router.push('/(tabs)/events/[id]', { params: { id: event.id } });
+            router.push(`/events/${event.id}`);
           }}
         >
-          <ThemedText style={theme.typography.friendEventList}>{event.eventTitle}</ThemedText>
-          <ThemedText style={theme.typography.body}>by {event.hostName}</ThemedText>
-        </ThemedView>
+          <ThemedView
+            key={event.id}
+            style={{
+              marginTop: 6,
+              marginLeft: 12,
+              marginBottom: 6,
+              gap: 8,
+              flexDirection: 'row' as const,
+            }}
+          >
+            <ThemedText style={theme.typography.friendEventList}>{event.eventTitle}</ThemedText>
+            <ThemedText style={theme.typography.body}>by {event.hostName}</ThemedText>
+          </ThemedView>
+        </TouchableOpacity>
       ))}
     </ThemedView>
   );
