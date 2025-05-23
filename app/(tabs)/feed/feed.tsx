@@ -9,6 +9,11 @@ import { getUserId } from '@/database/authHooks';
 import { Redirect } from 'expo-router';
 
 export default function HomeScreen() {
+  const userId = getUserId();
+  if (!userId) {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}

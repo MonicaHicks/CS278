@@ -4,10 +4,11 @@ export type User = {
   id: string; // Unique identifier for the user
   name: string; // Name of the user
   displayName: string; // Display name of the user
-  email: string; // Email address of the user
   image: string; // URL to the user's profile image
   events: string[]; // List of event IDs the has or will attend
   following: string[]; // List of user and club IDs the user follows
+  followers: string[]; // List of user IDs who follow the user
+  isClub: boolean; // Flag indicating if the user is a club
 };
 
 export type Club = {
@@ -24,10 +25,11 @@ export const sampleUser: User = {
   id: '1',
   name: 'Shannon K.',
   displayName: 'skomguem',
-  email: 'firstlast@stanford.edu',
   image: '',
   events: ['event1', 'event2', 'event3'],
   following: ['friend1', 'friend2', 'friend3'],
+  followers: ['friend4', 'friend5'],
+  isClub: false,
 };
 
 export type EventType = {

@@ -46,6 +46,8 @@ export const signUp = async (
       // Initializing user data in Firestore
       const userId = userCredential.user.uid;
       const userData = {
+        name: name,
+        image: photoURL || null,
         displayName: screenName,
         events: [],
         followers: [],

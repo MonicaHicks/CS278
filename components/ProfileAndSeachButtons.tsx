@@ -2,8 +2,14 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import theme from '@/assets/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { getUserId } from '@/database/authHooks';
 
 export default function ProfileAndSearchButtons() {
+  const userId = getUserId();
+  if (!userId) {
+    return null; // or handle the case when userId is not available
+  }
+
   const router = useRouter();
 
   return (
@@ -12,7 +18,7 @@ export default function ProfileAndSearchButtons() {
         style={styles.icon}
         onPress={() => {
           // Navigate to profile screen
-          router.push('/(tabs)/profile');
+          router.push(`/profile/${userId}`);
         }}
       >
         <Ionicons name="person-circle" size={40} color="#fff" />
