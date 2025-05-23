@@ -1,11 +1,11 @@
 // components/Feed.tsx
-import { fetchEvents, getRsvps } from '@/firestore';
+import { fetchEvents } from '@/database/eventHooks';
+import { getRsvps } from '@/database/rsvpHooks';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import EventComponent from './Event';
 import { EventType } from './types';
-import { auth } from '@/firebaseConfig';
 
 type FeedProps = {
   filter: 'upcoming' | 'past';

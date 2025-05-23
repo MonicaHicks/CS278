@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '@/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import theme from '@/assets/theme';
+import { signUp } from '@/database/authHooks';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -33,27 +34,18 @@ export default function SignUpPage() {
       return;
     }
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, {
-          displayName: name,
-          photoURL: profilePhoto || undefined,
-        });
-        // May want to save screenName and photo to Firestore here as well
+      const userCredential = await signUp(
+        email,
+        password,
+        name,
+        screenName,
+        profilePhoto || '',
+        false,
+      );
+      if (userCredential) {
         router.replace('/(tabs)/feed/feed');
-
-        // Initializing user data in Firestore
-        const userId = userCredential.user.uid;
-        const userData = {
-          displayName: screenName,
-          events: [],
-          followers: [],
-          following: [],
-          createdAt: new Date(),
-          isClub: false,
-        };
-        // Save user data to Firestore
-        await setDoc(doc(db, 'users', userId), userData);
+      } else {
+        alert('Sign up failed. Please try again.');
       }
     } catch (error) {
       console.error('Sign up error:', error);

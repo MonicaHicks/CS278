@@ -3,7 +3,7 @@ import { mockEvents } from '@/assets/data/mockEvents';
 import EventPage from '@/components/EventPage';
 import { useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator } from 'react-native';
-import { getEvent } from '@/firestore';
+import { getEvent } from '@/database/eventHooks';
 import { useEffect, useState } from 'react';
 import { EventType } from '@/components/types';
 
