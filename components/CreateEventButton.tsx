@@ -1,13 +1,15 @@
+import { auth } from '@/firebaseConfig';
 import React, { useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import EventCreationModal from './EventCreationModal'; // Import the modal
 
-type EventCreationButtonProps = {
-  userId: string; // User ID of the host
-};
+// type EventCreationButtonProps = {
+//   userId: string; // User ID of the host
+// };
 
-const EventCreationButton: React.FC<EventCreationButtonProps> = ({ userId }) => {
+export default function EventCreationButton() {
   const [modalVisible, setModalVisible] = useState(false);
+  const userId = auth.currentUser?.uid ? auth.currentUser?.uid : '';
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -18,7 +20,7 @@ const EventCreationButton: React.FC<EventCreationButtonProps> = ({ userId }) => 
       <EventCreationModal userId={userId} visible={modalVisible} onClose={closeModal} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -26,5 +28,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default EventCreationButton;

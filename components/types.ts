@@ -57,6 +57,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'CoDa B45',
+    hostId: '',
     comments: [],
   },
   {
@@ -68,6 +69,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'Old Union',
+    hostId: '',
     comments: [],
   },
   {
@@ -79,6 +81,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'CoDa E160',
+    hostId: '',
     comments: [],
   },
 ];

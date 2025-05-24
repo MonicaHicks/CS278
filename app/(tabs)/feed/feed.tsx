@@ -1,12 +1,13 @@
+import EventCreationButton from '@/components/CreateEventButton';
 import Feed from '@/components/Feed';
 import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { StyleSheet } from 'react-native';
 import { getUserId } from '@/database/authHooks';
 import { Redirect } from 'expo-router';
+import { StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
   const userId = getUserId();
@@ -27,6 +28,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.feed}>
         <Feed filter="upcoming" />
       </ThemedView>
+      <EventCreationButton />
     </ParallaxScrollView>
   );
 }
