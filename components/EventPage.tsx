@@ -1,24 +1,24 @@
 // components/EventPage.tsx
-import { mockComments } from "@/assets/data/mockComments";
-import React from "react";
-import { Image, StyleSheet, View } from "react-native";
-import theme from "../assets/theme";
-import CommentItem from "./Comment";
-import ParallaxScrollView from "./ParallaxScrollView";
-import RSVPButton from "./RSVPButton";
-import { ThemedText } from "./ThemedText";
-import { Event } from "./types";
+import { mockComments } from '@/assets/data/mockComments';
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import theme from '../assets/theme';
+import CommentItem from './Comment';
+import ParallaxScrollView from './ParallaxScrollView';
+import RSVPButton from './RSVPButton';
+import { ThemedText } from './ThemedText';
+import { EventType } from './types';
 
-export default function EventPage({ item }: { item: Event }) {
-  const formattedDate = item.dateTime.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
+export default function EventPage({ item }: { item: EventType }) {
+  const formattedDate = item.dateTime.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
   });
 
-  const formattedTime = item.dateTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
+  const formattedTime = item.dateTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
     hour12: true,
   });
 
@@ -26,13 +26,11 @@ export default function EventPage({ item }: { item: Event }) {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#FDF8F3", dark: "#1D3D47" }}
+      headerBackgroundColor={{ light: '#FDF8F3', dark: '#1D3D47' }}
       headerImage={
         <Image
           source={
-            item.hostFlyer
-              ? { uri: item.hostFlyer }
-              : require("../assets/images/Sample_Flyer.png")
+            item.hostFlyer ? { uri: item.hostFlyer } : require('../assets/images/Sample_Flyer.png')
           }
           style={styles.flyer}
         />
@@ -44,42 +42,28 @@ export default function EventPage({ item }: { item: Event }) {
             source={
               item.hostImage
                 ? { uri: item.hostImage }
-                : require("../assets/images/Placeholder_Club.png")
+                : require('../assets/images/Placeholder_Club.png')
             }
             style={theme.profilePic}
           />
-          <ThemedText style={theme.typography.eventTitle}>
-            {item.hostName}
-          </ThemedText>
+          <ThemedText style={theme.typography.eventTitle}>{item.hostName}</ThemedText>
         </View>
 
-        <ThemedText style={theme.typography.title}>
-          {item.eventTitle}
-        </ThemedText>
+        <ThemedText style={theme.typography.title}>{item.eventTitle}</ThemedText>
 
         <View style={styles.details}>
-          <ThemedText style={theme.typography.subtitle}>
-            {formattedTime}
-          </ThemedText>
-          <ThemedText style={theme.typography.subtitle}>
-            {formattedDate}
-          </ThemedText>
-          <ThemedText style={theme.typography.subtitle}>
-            Location: {item.location}
-          </ThemedText>
+          <ThemedText style={theme.typography.subtitle}>{formattedTime}</ThemedText>
+          <ThemedText style={theme.typography.subtitle}>{formattedDate}</ThemedText>
+          <ThemedText style={theme.typography.subtitle}>Location: {item.location}</ThemedText>
         </View>
 
-        <RSVPButton />
+        <RSVPButton item={item} />
         <View style={styles.commentSection}>
           <ThemedText style={theme.typography.subtitle}>Comments</ThemedText>
           {eventComments.length === 0 ? (
-            <ThemedText style={theme.typography.caption}>
-              No comments yet.
-            </ThemedText>
+            <ThemedText style={theme.typography.caption}>No comments yet.</ThemedText>
           ) : (
-            eventComments.map((comment) => (
-              <CommentItem comment={comment} key={comment.id} />
-            ))
+            eventComments.map((comment) => <CommentItem comment={comment} key={comment.id} />)
           )}
         </View>
       </View>
@@ -89,21 +73,21 @@ export default function EventPage({ item }: { item: Event }) {
 
 const styles = StyleSheet.create({
   flyer: {
-    width: "100%",
+    width: '100%',
     height: 240,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   content: {
     padding: 20,
     gap: 16,
   },
   hostInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
   },
   details: {
-    alignItems: "center",
+    alignItems: 'center',
     gap: 6,
   },
   commentSection: {

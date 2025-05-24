@@ -6,8 +6,15 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { getUserId } from '@/database/authHooks';
+import { Redirect } from 'expo-router';
 
 export default function HomeScreen() {
+  const userId = getUserId();
+  if (!userId) {
+    return <Redirect href="/login" />;
+  }
+
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
 
   return (
@@ -56,11 +63,11 @@ export default function HomeScreen() {
       <ThemedView style={styles.feed}>
         {view === 'upcomingEvents' ? (
           <View>
-            <Feed filter="upcoming" />
+            <Feed filter="upcoming" userId={userId} />
           </View>
         ) : (
           <View>
-            <Feed filter="past" />
+            <Feed filter="past" userId={userId} />
           </View>
         )}
       </ThemedView>

@@ -1,5 +1,6 @@
 // components/Feed.tsx
-import { fetchEvents } from '@/firestore';
+import { fetchEvents } from '@/database/eventHooks';
+import { getRsvps } from '@/database/rsvpHooks';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -8,15 +9,24 @@ import { EventType } from './types';
 
 type FeedProps = {
   filter: 'upcoming' | 'past';
+  // If userId us provided, only render that user's events
+  userId?: string;
 };
 
-export default function Feed({ filter }: FeedProps) {
+export default function Feed({ filter, userId }: FeedProps) {
   const [events, setEvents] = useState<EventType[]>([]);
   const now = new Date();
 
   useEffect(() => {
     const load = async () => {
-      const allEvents = await fetchEvents();
+      // Should add props depending on if this is the user's feed or a public feed
+      let allEvents = null;
+      if (userId) {
+        allEvents = await getRsvps(userId);
+      } else {
+        allEvents = await fetchEvents();
+      }
+      // const allEvents = await fetchEvents();
       const filtered = allEvents.filter((event) =>
         filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now,
       );
