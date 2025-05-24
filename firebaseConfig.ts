@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import { getApp, getApps, initializeApp } from 'firebase/app';
 import { initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'; // if you're using Firestore
 
@@ -13,7 +13,9 @@ const firebaseConfig = {
   appId: '1:467508675893:web:5b183b7334e7b2d7ec387c',
   measurementId: 'G-S2RVM5MPWF',
 };
-export const app = initializeApp(firebaseConfig);
+
+export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+// export const app = initializeApp(firebaseConfig);
 export const db = getFirestore();
 // TODO: auth persistence
 export const auth = initializeAuth(app);
