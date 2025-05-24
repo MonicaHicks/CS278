@@ -41,6 +41,7 @@ export type EventType = {
   attendees: string[]; // List of user IDs
   dateTime: Date; // Date and time of the event
   location: string; // Location of the event
+  hostId: string;
   comments: string[]; // List of comment IDs
 };
 

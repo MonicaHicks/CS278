@@ -1,8 +1,8 @@
 import theme from '@/assets/theme';
-import { addComment, fetchComments } from '@/firestore';
+import { addComment, fetchComments } from '@/database/commentHooks';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import CommentItem from './CommentItem'; // Assuming you already have a CommentItem component
+import CommentItem from './CommentItem';
 import { ThemedText } from './ThemedText';
 import { Comment } from './types';
 

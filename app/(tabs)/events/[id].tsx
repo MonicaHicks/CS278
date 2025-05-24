@@ -1,7 +1,7 @@
 // app/(tabs)/events/[id].tsx
 import EventPage from '@/components/EventPage';
 import { EventType } from '@/components/types';
-import { getEvent } from '@/firestore';
+import { getEvent } from '@/database/eventHooks';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
