@@ -1,22 +1,23 @@
-import * as ImagePicker from 'expo-image-picker';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import uuid from 'react-native-uuid';
-
 import theme from '@/assets/theme';
 import { EventType } from '@/components/types';
 import { createEvent } from '@/database/eventHooks';
 import { auth } from '@/firebaseConfig';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as ImagePicker from 'expo-image-picker';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
   Modal,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import uuid from 'react-native-uuid';
 
 type EventCreationModalProps = {
   userId: string;
@@ -27,7 +28,10 @@ type EventCreationModalProps = {
 const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible, onClose }) => {
   const [eventTitle, setEventTitle] = useState('');
   const [location, setLocation] = useState('');
-  const [dateTime, setDateTime] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [flyerImage, setFlyerImage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,6 +40,7 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
   const user = auth.currentUser?.displayName || '';
 
   const pickImage = async () => {
+    setShowTimePicker(false);
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       alert('Permission to access media library is required!');
@@ -69,15 +74,10 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
         xhr.send(null);
       });
 
-      console.log('Blob:', blob);
-      console.log('Blob type:', blob?.type);
       const filename = `flyers/${uuid.v4()}.jpg`;
       const storageRef = ref(getStorage(), filename);
-      console.log('1');
       const snapshot = await uploadBytes(storageRef, blob);
-      console.log('2');
       const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log('3');
       return downloadURL;
     } catch (error) {
       console.error('Image upload error:', error);
@@ -85,11 +85,22 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
     }
   };
 
+  const combineDateTime = (date: Date, time: Date): Date => {
+    const combined = new Date(date);
+    combined.setHours(time.getHours());
+    combined.setMinutes(time.getMinutes());
+    combined.setSeconds(0);
+    combined.setMilliseconds(0);
+    return combined;
+  };
+
   const handleCreateEvent = async () => {
-    if (!eventTitle || !location || !dateTime) {
+    if (!eventTitle || !location || !selectedDate || !selectedTime) {
       setErrorMessage('Please fill in all the fields');
       return;
     }
+
+    const eventDateTime = combineDateTime(selectedDate, selectedTime);
 
     try {
       setLoading(true);
@@ -107,7 +118,7 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
         eventTitle,
         hostFlyer: flyerUrl,
         location,
-        dateTime: new Date(dateTime),
+        dateTime: new Date(eventDateTime),
         hostId: userId,
         attendees: [userId],
         comments: [],
@@ -142,12 +153,44 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
             value={location}
             onChangeText={setLocation}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Date & Time (YYYY-MM-DDTHH:MM)"
-            value={dateTime}
-            onChangeText={setDateTime}
-          />
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
+            <Text style={{ color: selectedDate ? '#000' : '#888' }}>
+              {selectedDate ? selectedDate.toDateString() : 'Pick a Date'}
+            </Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              mode="date"
+              display="spinner"
+              value={selectedDate || new Date()}
+              onChange={(event, date) => {
+                if (Platform.OS === 'android') setShowDatePicker(false);
+                if (date) setSelectedDate(date);
+              }}
+            />
+          )}
+
+          <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.input}>
+            <Text style={{ color: selectedTime ? '#000' : '#888' }}>
+              {selectedTime
+                ? selectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                : 'Pick a Time'}
+            </Text>
+          </TouchableOpacity>
+
+          {showTimePicker && (
+            <DateTimePicker
+              mode="time"
+              display="spinner"
+              value={selectedTime || new Date()}
+              onChange={(event, time) => {
+                if (Platform.OS === 'android') setShowTimePicker(false);
+                if (time) setSelectedTime(time);
+              }}
+              is24Hour={false}
+            />
+          )}
 
           <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
             <Text style={styles.imagePickerText}>
@@ -155,12 +198,7 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
             </Text>
           </TouchableOpacity>
 
-          {flyerImage && (
-            <Image
-              source={{ uri: flyerImage }}
-              style={{ width: '100%', height: 200, borderRadius: 10, marginTop: 10 }}
-            />
-          )}
+          {flyerImage && <Image source={{ uri: flyerImage }} style={styles.flyerImage} />}
 
           {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
@@ -196,8 +234,9 @@ const styles = StyleSheet.create({
   modal: {
     width: '90%',
     backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
+    borderRadius: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.2,
@@ -206,7 +245,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 12,
     textAlign: 'center',
   },
   input: {
@@ -214,8 +253,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 12,
+    paddingVertical: 12,
+    marginBottom: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  flyerImage: {
+    width: '100%',
+    height: 160,
+    borderRadius: 10,
+    marginTop: 10,
   },
   error: {
     color: 'red',
@@ -227,7 +273,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginVertical: 10,
+    marginTop: 10,
   },
   imagePickerText: {
     color: '#fff',
