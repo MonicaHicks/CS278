@@ -38,6 +38,7 @@ const typography = {
     fontSize: 32,
     fontWeight: '700' as const,
     lineHeight: 36, // optional: a little taller than fontSize
+    textAlign: 'center' as 'center',
   },
   subtitle: {
     fontSize: 20,
@@ -48,6 +49,7 @@ const typography = {
     fontSize: 26,
     fontWeight: '600' as const,
     lineHeight: 32,
+    textAlign: 'center' as 'center',
   },
   friendEventList: {
     fontSize: 20,

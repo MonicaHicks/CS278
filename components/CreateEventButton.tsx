@@ -1,6 +1,7 @@
+import theme from '@/assets/theme';
 import { auth } from '@/firebaseConfig';
 import React, { useState } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import EventCreationModal from './EventCreationModal'; // Import the modal
 
 // type EventCreationButtonProps = {
@@ -16,7 +17,9 @@ export default function EventCreationButton() {
 
   return (
     <View style={styles.container}>
-      <Button title="Create Event" onPress={openModal} />
+      <TouchableOpacity onPress={openModal}>
+        <Text style={styles.buttonText}> Create Event </Text>
+      </TouchableOpacity>
       <EventCreationModal userId={userId} visible={modalVisible} onClose={closeModal} />
     </View>
   );
@@ -24,7 +27,13 @@ export default function EventCreationButton() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     alignItems: 'center',
+    backgroundColor: theme.colors.primary,
+    borderRadius: 10,
+  },
+  buttonText: {
+    ...theme.typography.subtitle,
+    color: 'white',
   },
 });
