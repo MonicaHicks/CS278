@@ -1,13 +1,19 @@
-import { ThemedText } from '@/components/ThemedText';
+import theme from '@/assets/theme';
+import { ThemedText } from '@/components/ThemedText'; // or wherever ThemedText is from
 import { Image, View } from 'react-native';
-import theme from '../assets/theme';
-import { User } from './types';
+import { User } from './types'; // adjust path if needed
 
 export default function ProfileHeader(userProfile: User) {
+  const hasProfileImage = !!userProfile.image;
+
   return (
     <View style={theme.profilePicNameContainer}>
       <Image
-        source={require('../assets/images/Placeholder_Club.png')}
+        source={
+          hasProfileImage
+            ? { uri: userProfile.image }
+            : require('../assets/images/Placeholder_Club.png')
+        }
         style={theme.profileLargePic}
       />
       <View style={theme.profileNameAndInfoContainer}>

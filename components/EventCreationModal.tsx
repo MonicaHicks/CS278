@@ -1,11 +1,12 @@
 import theme from '@/assets/theme';
 import { EventType } from '@/components/types';
-import { createEvent } from '@/database/eventHooks';
+import { createEvent, editEvent } from '@/database/eventHooks';
+import { getUserImage } from '@/database/userHooks';
 import { auth } from '@/firebaseConfig';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -23,9 +24,15 @@ type EventCreationModalProps = {
   userId: string;
   visible: boolean;
   onClose: () => void;
+  eventToEdit?: EventType | null;
 };
 
-const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible, onClose }) => {
+const EventCreationModal: React.FC<EventCreationModalProps> = ({
+  userId,
+  visible,
+  onClose,
+  eventToEdit,
+}) => {
   const [eventTitle, setEventTitle] = useState('');
   const [location, setLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -36,11 +43,19 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [hostImageUrl, setHostImageUrl] = useState<string>('');
 
   const user = auth.currentUser?.displayName || '';
 
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await getUserImage(auth.currentUser?.uid || '');
+      if (url) setHostImageUrl(url);
+    };
+    fetchImage();
+  }, []);
+
   const pickImage = async () => {
-    setShowTimePicker(false);
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       alert('Permission to access media library is required!');
@@ -114,7 +129,7 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
 
       const newEvent: EventType = {
         hostName: user,
-        hostImage: '',
+        hostImage: hostImageUrl,
         eventTitle,
         hostFlyer: flyerUrl,
         location,
@@ -130,6 +145,43 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
     } catch (error) {
       console.error(error);
       setErrorMessage('Failed to create event. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditEvent = async () => {
+    if (!eventToEdit || !eventTitle || !location || !selectedDate || !selectedTime) {
+      setErrorMessage('Please fill in all the fields');
+      return;
+    }
+
+    const eventDateTime = combineDateTime(selectedDate, selectedTime);
+
+    try {
+      setLoading(true);
+      let flyerUrl = eventToEdit.hostFlyer || '';
+
+      if (flyerImage && flyerImage !== eventToEdit.hostFlyer) {
+        setUploading(true);
+        flyerUrl = await uploadImageAsync(flyerImage);
+        setUploading(false);
+      }
+
+      const updatedEvent: EventType = {
+        ...eventToEdit,
+        eventTitle,
+        location,
+        dateTime: new Date(eventDateTime),
+        hostFlyer: flyerUrl,
+      };
+
+      await editEvent(userId, eventToEdit.id!, updatedEvent);
+      alert('Event updated successfully!');
+      onClose();
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Failed to update event. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -171,7 +223,13 @@ const EventCreationModal: React.FC<EventCreationModalProps> = ({ userId, visible
             />
           )}
 
-          <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.input}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowTimePicker(true);
+              setShowDatePicker(false);
+            }}
+            style={styles.input}
+          >
             <Text style={{ color: selectedTime ? '#000' : '#888' }}>
               {selectedTime
                 ? selectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })

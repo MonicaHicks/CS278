@@ -1,6 +1,6 @@
 import { User } from '@/components/types';
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '@/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 
 // getUser
 export async function getUser(userId: string): Promise<User | null> {
@@ -22,3 +22,21 @@ export async function getUser(userId: string): Promise<User | null> {
   }
   return null; // User does not exist
 }
+
+export const getUserImage = async (userId: string): Promise<string> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      return userData.image || '';
+    } else {
+      console.warn(`No user found with ID: ${userId}`);
+      return '';
+    }
+  } catch (error) {
+    console.error('Error fetching user image:', error);
+    return '';
+  }
+};

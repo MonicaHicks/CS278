@@ -64,7 +64,7 @@ export const createEvent = async (userId: string, event: EventType) => {
   }
 };
 
-const editEvent = async (userId: string, eventId: string, updatedEvent: EventType) => {
+export const editEvent = async (userId: string, eventId: string, updatedEvent: EventType) => {
   try {
     const eventRef = doc(db, 'events', eventId);
     const eventDoc = await getDoc(eventRef);
@@ -89,7 +89,7 @@ const editEvent = async (userId: string, eventId: string, updatedEvent: EventTyp
   }
 };
 
-const deleteEvent = async (userId: string, eventId: string) => {
+export const deleteEvent = async (userId: string, eventId: string) => {
   try {
     const eventRef = doc(db, 'events', eventId);
     const eventDoc = await getDoc(eventRef);
