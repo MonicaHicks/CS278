@@ -40,29 +40,35 @@ export default function EventModal({
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={theme.eventModalOverlay}>
           <View style={theme.eventModalContent}>
-            <View style={[theme.profilePicNameContainer, { marginVertical: 8 }]}>
-              <Image
-                source={
-                  item.hostImage
-                    ? { uri: item.hostImage }
-                    : require('../assets/images/Placeholder_Club.png')
-                }
-                style={theme.profilePic}
-              />
-              <ThemedText
-                style={[
-                  theme.typography.eventTitle,
-                  {
-                    marginTop: 12,
-                    textAlign: 'center',
-                  },
-                ]}
-                adjustsFontSizeToFit
-                numberOfLines={2}
-              >
-                {item.hostName}
-              </ThemedText>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                router.push(`/profile/${item.hostId}`);
+              }}
+            >
+              <View style={[theme.profilePicNameContainer, { marginVertical: 8 }]}>
+                <Image
+                  source={
+                    item.hostImage
+                      ? { uri: item.hostImage }
+                      : require('../assets/images/Placeholder_Club.png')
+                  }
+                  style={theme.profilePic}
+                />
+                <ThemedText
+                  style={[
+                    theme.typography.eventTitle,
+                    {
+                      marginTop: 12,
+                      textAlign: 'center',
+                    },
+                  ]}
+                  adjustsFontSizeToFit
+                  numberOfLines={2}
+                >
+                  {item.hostName}
+                </ThemedText>
+              </View>
+            </TouchableOpacity>
             {/* <View > */}
             <TouchableOpacity
               style={{ alignItems: 'center', gap: 8, margin: 10 }}

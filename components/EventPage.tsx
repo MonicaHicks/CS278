@@ -1,13 +1,15 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import theme from '../assets/theme';
 import Comments from './Comment'; // Ensure the correct component is imported (Comment vs Comments)
 import ParallaxScrollView from './ParallaxScrollView';
 import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
 import { EventType } from './types';
+import { useRouter } from 'expo-router';
 
 export default function EventPage({ item }: { item: EventType }) {
+  const router = useRouter();
   const formattedDate = item.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
@@ -34,17 +36,23 @@ export default function EventPage({ item }: { item: EventType }) {
       }
     >
       <View style={styles.content}>
-        <View style={styles.hostInfo}>
-          <Image
-            source={
-              item.hostImage
-                ? { uri: item.hostImage }
-                : require('../assets/images/Placeholder_Club.png')
-            }
-            style={theme.profilePic}
-          />
-          <ThemedText style={theme.typography.eventTitle}>{item.hostName}</ThemedText>
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            router.push(`/profile/${item.hostId}`);
+          }}
+        >
+          <View style={styles.hostInfo}>
+            <Image
+              source={
+                item.hostImage
+                  ? { uri: item.hostImage }
+                  : require('../assets/images/Placeholder_Club.png')
+              }
+              style={theme.profilePic}
+            />
+            <ThemedText style={theme.typography.eventTitle}>{item.hostName}</ThemedText>
+          </View>
+        </TouchableOpacity>
 
         <ThemedText style={theme.typography.title}>{item.eventTitle}</ThemedText>
 
