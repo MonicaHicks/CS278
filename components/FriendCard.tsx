@@ -44,7 +44,6 @@ function EventList({ eventsAttending }: { eventsAttending: EventType[] }) {
           key={event.id}
           onPress={() => {
             console.log('Event pressed');
-            // router.push('/(tabs)/events/[id]', { params: { id: event.id } });
             router.push(`/events/${event.id}`);
           }}
         >
