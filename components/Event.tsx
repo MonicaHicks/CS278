@@ -74,31 +74,32 @@ export default function EventComponent({ item }: { item: EventType }) {
               {formattedDateTime} · {item.location}
             </ThemedText>
           </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: theme.colors.primary,
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                borderRadius: 8,
-              }}
-              onPress={() => setEditVisible(true)}
-            >
-              <Text style={{ color: '#fff', fontWeight: '600' }}>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#999', // or use theme.colors.secondary if you have one
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                borderRadius: 8,
-              }}
-              onPress={handleDelete}
-            >
-              <Text style={{ color: '#fff', fontWeight: '600' }}>Delete</Text>
-            </TouchableOpacity>
-          </View>
+          {isHost && (
+            <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  paddingVertical: 8,
+                  paddingHorizontal: 16,
+                  borderRadius: 8,
+                }}
+                onPress={() => setEditVisible(true)}
+              >
+                <Text style={{ color: '#fff', fontWeight: '600' }}>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#999', // or use theme.colors.secondary if you have one
+                  paddingVertical: 8,
+                  paddingHorizontal: 16,
+                  borderRadius: 8,
+                }}
+                onPress={handleDelete}
+              >
+                <Text style={{ color: '#fff', fontWeight: '600' }}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </ThemedView>
       </Pressable>
 

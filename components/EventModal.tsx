@@ -57,8 +57,8 @@ export default function EventModal({
                     textAlign: 'center',
                   },
                 ]}
-                // adjustsFontSizeToFit
-                // numberOfLines={2}
+                adjustsFontSizeToFit
+                numberOfLines={2}
               >
                 {item.hostName}
               </ThemedText>
