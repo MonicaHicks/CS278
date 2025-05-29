@@ -5,12 +5,22 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import CommentItem from './CommentItem';
 import { ThemedText } from './ThemedText';
 import { Comment } from './types';
+import { getUserId } from '@/database/authHooks';
 
 type CommentsProps = {
   eventID: string; // Accept eventID as a prop
 };
 
 export default function Comments({ eventID }: CommentsProps) {
+  // Check if user is logged in
+  const userId = getUserId(); // Get the current user's ID
+  if (!userId) {
+    return (
+      <View style={styles.commentSection}>
+        <ThemedText style={styles.caption}>Please log in to view and post comments.</ThemedText>
+      </View>
+    );
+  }
   const [eventComments, setEventComments] = useState<Comment[]>([]); // Manage comments state
   const [newComment, setNewComment] = useState<string>(''); // Manage new comment input
 

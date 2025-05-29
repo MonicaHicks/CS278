@@ -14,7 +14,6 @@ import { getUserId } from '@/database/authHooks';
 import { User } from '@/components/types';
 
 const Separator = () => <View style={styles.separator} />;
-// TODO: hide expo header on this page
 
 export const options = {
   href: null,

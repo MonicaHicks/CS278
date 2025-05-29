@@ -36,7 +36,7 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
 
 function EventList({ eventsAttending }: { eventsAttending: EventType[] }) {
   const router = useRouter();
-  // Only list the most revent 3 events
+  // TODO: Only list the most recent 3 events
   return (
     <ThemedView>
       {eventsAttending.map((event) => (
