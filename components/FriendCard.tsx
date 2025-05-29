@@ -14,7 +14,7 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
       <TouchableOpacity
         onPress={() => {
           console.log('Friend profile pressed');
-          router.push('/(tabs)/friends/profile');
+          router.push(`/profile/${friendInfo.id}`);
         }}
       >
         <View style={theme.profilePicNameContainer}>
@@ -24,7 +24,7 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
           />
           <ThemedText style={[theme.typography.subtitle]}>{friendInfo.name}</ThemedText>
           <ThemedText style={[theme.typography.body]}>
-            is attending {friendInfo.events.length} event {friendInfo.events.length > 1 ? 's' : ''}:
+            is attending {friendInfo.events.length} event{friendInfo.events.length > 1 ? 's' : ''}:
           </ThemedText>
         </View>
       </TouchableOpacity>

@@ -4,6 +4,7 @@ import { Image, View } from 'react-native';
 import { User } from './types'; // adjust path if needed
 
 export default function ProfileHeader(userProfile: User) {
+  const userIsClub = userProfile.isClub || false;
   const hasProfileImage = !!userProfile.image;
 
   return (

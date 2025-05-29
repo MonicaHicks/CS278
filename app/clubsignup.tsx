@@ -1,30 +1,11 @@
 import { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 // import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
 import theme from '@/assets/theme';
 import { signUp } from '@/database/authHooks';
-import * as ImagePicker from 'expo-image-picker';
-import { router } from 'expo-router';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import uuid from 'react-native-uuid';
 
-const uploadImageAsync = async (uri: string): Promise<string> => {
-  const blob: Blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = () => resolve(xhr.response);
-    xhr.onerror = () => reject(new Error('Image fetch failed'));
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-    xhr.send(null);
-  });
-
-  const filename = `profilePhotos/${uuid.v4()}.jpg`;
-  const storageRef = ref(getStorage(), filename);
-  const snapshot = await uploadBytes(storageRef, blob);
-  return await getDownloadURL(snapshot.ref);
-};
-
-export default function SignUpPage() {
+export default function ClubSignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -32,22 +13,16 @@ export default function SignUpPage() {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   const pickImage = async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      alert('Permission to access media library is required!');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
-
-    if (!result.canceled && result.assets.length > 0) {
-      setProfilePhoto(result.assets[0].uri);
-    }
+    console.log('pickImage');
+    // const result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //   allowsEditing: true,
+    //   aspect: [1, 1],
+    //   quality: 0.5,
+    // });
+    // if (!result.canceled && result.assets.length > 0) {
+    //   setProfilePhoto(result.assets[0].uri);
+    // }
   };
 
   const handleSignup = async () => {
@@ -55,35 +30,15 @@ export default function SignUpPage() {
       alert('Please fill out all fields');
       return;
     }
-
     try {
-      let profilePhotoUrl = '';
-
-      if (profilePhoto) {
-        const blob: Blob = await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.onload = () => resolve(xhr.response);
-          xhr.onerror = () => reject(new Error('Image fetch failed'));
-          xhr.responseType = 'blob';
-          xhr.open('GET', profilePhoto, true);
-          xhr.send(null);
-        });
-
-        const filename = `profilePhotos/${uuid.v4()}.jpg`;
-        const storageRef = ref(getStorage(), filename);
-        const snapshot = await uploadBytes(storageRef, blob);
-        profilePhotoUrl = await getDownloadURL(snapshot.ref);
-      }
-
       const userCredential = await signUp(
         email,
         password,
         name,
         screenName,
-        profilePhotoUrl,
-        false,
+        profilePhoto || '',
+        true, // true for club account
       );
-
       if (userCredential) {
         router.replace('/(tabs)/feed/feed');
       } else {
@@ -97,11 +52,11 @@ export default function SignUpPage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Student Sign Up</Text>
-      <TextInput style={styles.input} placeholder="Full Name" value={name} onChangeText={setName} />
+      <Text style={styles.title}>Club Sign Up</Text>
+      <TextInput style={styles.input} placeholder="Club Name" value={name} onChangeText={setName} />
       <TextInput
         style={styles.input}
-        placeholder="Screen Name"
+        placeholder="Club Screen Name"
         value={screenName}
         onChangeText={setScreenName}
       />

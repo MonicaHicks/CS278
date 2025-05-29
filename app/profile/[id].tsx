@@ -67,6 +67,10 @@ export default function ProfileScreen() {
     );
   }
 
+  // Render diffrent text if the user is a club or a student
+  // const userIsClub = user.isClub;
+  // const eventsSummary =
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
