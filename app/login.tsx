@@ -17,8 +17,7 @@ export default function LoginPage() {
       const user = await signIn(email, password);
       if (user) router.replace('/(tabs)/feed/feed');
     } catch (error) {
-      console.error('Login error:', error);
-      alert('Login failed. Please check your credentials.');
+      alert(`Login failed due to: ${error.message}`);
     }
   };
 
