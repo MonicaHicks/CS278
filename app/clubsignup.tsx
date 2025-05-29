@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 import theme from '@/assets/theme';
 import { signUp } from '@/database/authHooks';
 
-export default function SignUpPage() {
+export default function ClubSignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -37,7 +37,7 @@ export default function SignUpPage() {
         name,
         screenName,
         profilePhoto || '',
-        false,
+        true, // true for club account
       );
       if (userCredential) {
         router.replace('/(tabs)/feed/feed');
@@ -52,11 +52,11 @@ export default function SignUpPage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Student Sign Up</Text>
-      <TextInput style={styles.input} placeholder="Full Name" value={name} onChangeText={setName} />
+      <Text style={styles.title}>Club Sign Up</Text>
+      <TextInput style={styles.input} placeholder="Club Name" value={name} onChangeText={setName} />
       <TextInput
         style={styles.input}
-        placeholder="Screen Name"
+        placeholder="Club Screen Name"
         value={screenName}
         onChangeText={setScreenName}
       />
