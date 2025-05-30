@@ -42,10 +42,10 @@ export default function LoginPage() {
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/signup')}>
+      <TouchableOpacity onPress={() => router.replace('/signup')}>
         <Text style={styles.link}>Don't have student account? Sign up</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/clubsignup')}>
+      <TouchableOpacity onPress={() => router.replace('/clubsignup')}>
         <Text style={styles.link}>Don't have club account? Sign up</Text>
       </TouchableOpacity>
     </View>

@@ -9,6 +9,16 @@ import { Friend } from '../components/types';
 
 export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
   const router = useRouter();
+
+  // Get upcoming events
+
+  const upcomingEvents = friendInfo.events.filter((event) => {
+    const now = new Date();
+    return event.dateTime > now;
+  });
+  // Sort by date
+  upcomingEvents.sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime());
+
   return (
     <ThemedView style={theme.friendCard}>
       <TouchableOpacity
@@ -24,11 +34,11 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
           />
           <ThemedText style={[theme.typography.subtitle]}>{friendInfo.name}</ThemedText>
           <ThemedText style={[theme.typography.body]}>
-            is attending {friendInfo.events.length} event{friendInfo.events.length > 1 ? 's' : ''}:
+            is attending {upcomingEvents.length} event{upcomingEvents.length > 1 ? 's' : ''}:
           </ThemedText>
         </View>
       </TouchableOpacity>
-      <EventList eventsAttending={friendInfo.events} />
+      <EventList eventsAttending={upcomingEvents} />
     </ThemedView>
   );
   // List the soonest 3 events for each friend
@@ -36,10 +46,9 @@ export default function FriendCard({ friendInfo }: { friendInfo: Friend }) {
 
 function EventList({ eventsAttending }: { eventsAttending: EventType[] }) {
   const router = useRouter();
-  // TODO: Only list the most recent 3 events
   return (
     <ThemedView>
-      {eventsAttending.map((event) => (
+      {eventsAttending.slice(0, 3).map((event) => (
         <TouchableOpacity
           key={event.id}
           onPress={() => {

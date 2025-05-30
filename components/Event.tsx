@@ -8,12 +8,10 @@ import EventModal from './EventModal';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { EventType } from './types';
-import { useRouter } from 'expo-router';
 
 export default function EventComponent({ item }: { item: EventType }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
-  const router = useRouter();
 
   const formattedDateTime = `${item.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',

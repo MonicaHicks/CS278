@@ -22,7 +22,7 @@ export default function FollowButton({ pageUserId }: FollowButtonProps) {
         <TouchableOpacity
           onPress={() => {
             Alert.alert('Please log in to follow');
-            router.push('/login');
+            router.replace('/login');
           }}
         >
           <View style={{ ...styles.button, backgroundColor: theme.colors.primary }}>
