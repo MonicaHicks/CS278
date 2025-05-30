@@ -2,14 +2,27 @@ import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
+import { getUserId } from '@/database/authHooks';
+import { getUser } from '@/database/userHooks';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Tabs, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  const [isHost, setIsHost] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userId = await getUserId();
+      const user = await getUser(userId);
+      if (user) setIsHost(user?.isClub);
+    };
+    fetchUser();
+  }, []);
 
   return (
     <Tabs
@@ -37,7 +50,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="friends"
         options={{
-          title: 'Friends',
+          title: isHost === true ? 'Create Event' : 'Friends',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
         listeners={{

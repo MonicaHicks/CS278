@@ -1,30 +1,18 @@
 import theme from '@/assets/theme';
+import BackButton from '@/components/BackButton';
 import Feed from '@/components/Feed';
 import FollowButton from '@/components/FollowButton';
-import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import ProfileAndSearchButtons from '@/components/ProfileAndSearchButtons';
 import ProfileHeader from '@/components/ProfileHeader';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useState, useEffect } from 'react';
-import {
-  Share,
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Alert,
-  Image,
-} from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { getUser } from '@/database/userHooks';
-import { getUserId } from '@/database/authHooks';
 import { User } from '@/components/types';
-import * as Clipboard from 'expo-clipboard';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import BackButton from '@/components/BackButton';
-import ProfileAndSearchButtons from '@/components/ProfileAndSearchButtons';
+import { getUserId, signOut } from '@/database/authHooks';
+import { getUser } from '@/database/userHooks';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -58,6 +46,7 @@ export default function ProfileScreen() {
   const [user, setUser] = useState<User | null>(null);
   const [view, setView] = useState<'upcomingEvents' | 'pastEvents'>('upcomingEvents');
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // Only render the follow button if the user is not viewing their own profile
   const userId = getUserId();
@@ -66,6 +55,7 @@ export default function ProfileScreen() {
   if (userId == stringId) {
     isOwnProfile = true;
   }
+  console.log(user);
 
   // Load user data from server
   useEffect(() => {
@@ -100,6 +90,15 @@ export default function ProfileScreen() {
     );
   }
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.replace('/login'); // Or wherever your login screen is
+    } catch (error) {
+      alert('Failed to log out: ');
+    }
+  };
+
   // Copy and share buttons are commented out for now
   //   <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 16, marginVertical: 8 }}>
   //   <TouchableOpacity onPress={shareLink} style={{ padding: 8 }}>
@@ -129,6 +128,15 @@ export default function ProfileScreen() {
         <ProfileHeader {...user} />
       </ThemedView>
       {isOwnProfile ? null : <FollowButton pageUserId={id as string} />}
+      {isOwnProfile ? (
+        <View style={styles.logout}>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+            <ThemedText style={styles.logoutText}>Log Out</ThemedText>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <></>
+      )}
       <Separator />
       <ThemedView>
         <ThemedText
@@ -136,6 +144,7 @@ export default function ProfileScreen() {
         >
           {isOwnProfile ? 'Your' : user.name + "'s"} activity
         </ThemedText>
+
         <View style={theme.toggleContainer}>
           <TouchableOpacity
             style={[
@@ -201,5 +210,23 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     position: 'absolute',
+  },
+  logout: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoutButton: {
+    marginTop: 24,
+    width: '70%',
+    backgroundColor: '#AAA',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  logoutText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

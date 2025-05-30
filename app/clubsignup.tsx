@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 // import * as ImagePicker from 'expo-image-picker';
-import { router } from 'expo-router';
 import theme from '@/assets/theme';
 import { signUp } from '@/database/authHooks';
+import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
 
 export default function ClubSignUpPage() {
   const [email, setEmail] = useState('');
@@ -14,15 +15,15 @@ export default function ClubSignUpPage() {
 
   const pickImage = async () => {
     console.log('pickImage');
-    // const result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //   allowsEditing: true,
-    //   aspect: [1, 1],
-    //   quality: 0.5,
-    // });
-    // if (!result.canceled && result.assets.length > 0) {
-    //   setProfilePhoto(result.assets[0].uri);
-    // }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
+    if (!result.canceled && result.assets.length > 0) {
+      setProfilePhoto(result.assets[0].uri);
+    }
   };
 
   const handleSignup = async () => {

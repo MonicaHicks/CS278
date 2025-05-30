@@ -1,12 +1,14 @@
+// @ts-ignore
 import { auth, db } from '@/firebaseConfig';
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 export const getUserId = () => {
+  // @ts-ignore
   const user = auth.currentUser;
   if (user) {
     return user.uid;
@@ -18,6 +20,7 @@ export const getUserId = () => {
 
 export const signIn = async (email: string, password: string) => {
   try {
+    // @ts-ignore
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   } catch (error) {
@@ -35,6 +38,7 @@ export const signUp = async (
   isClub: boolean,
 ) => {
   try {
+    // @ts-ignore
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     if (userCredential.user) {
       // Update firestore profile
@@ -53,7 +57,7 @@ export const signUp = async (
         followers: [],
         following: [],
         createdAt: new Date(),
-        isClub: false,
+        isClub: isClub,
       };
 
       // Save user data in the 'users' table in Firestore
@@ -69,6 +73,7 @@ export const signUp = async (
 
 export const signOut = async () => {
   try {
+    // @ts-ignore
     await auth.signOut();
   } catch (error) {
     console.error('Error signing out:', error);
