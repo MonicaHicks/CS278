@@ -3,18 +3,9 @@ import theme from '../assets/theme';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { useRouter } from 'expo-router';
+import { Friend } from './types';
 
-export default function FriendShortCard({
-  friendInfo,
-}: {
-  // Not fully sold on this freinds schema yet.
-  friendInfo: {
-    id: string;
-    name: string;
-    image: string;
-    eventsAttending: string[];
-  };
-}) {
+export default function FriendShortCard({ friendInfo }: { friendInfo: Friend }) {
   const router = useRouter();
   return (
     <ThemedView style={theme.friendCard}>
@@ -31,7 +22,7 @@ export default function FriendShortCard({
           />
           <View style={theme.profileAndDisplayName}>
             <ThemedText type="subtitle">{friendInfo.name}</ThemedText>
-            <ThemedText type="default">displayname</ThemedText>
+            <ThemedText type="default">{friendInfo.displayName}</ThemedText>
           </View>
         </View>
       </TouchableOpacity>
