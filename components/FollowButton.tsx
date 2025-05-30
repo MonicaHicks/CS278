@@ -21,12 +21,12 @@ export default function FollowButton({ pageUserId }: FollowButtonProps) {
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
-            Alert.alert('Please log in to RSVP');
-            router.push('/login');
+            Alert.alert('Please log in to follow');
+            router.replace('/login');
           }}
         >
           <View style={{ ...styles.button, backgroundColor: theme.colors.primary }}>
-            <ThemedText style={styles.text}>Log in to RSVP</ThemedText>
+            <ThemedText style={styles.text}>Log in to Follow</ThemedText>
           </View>
         </TouchableOpacity>
       </View>

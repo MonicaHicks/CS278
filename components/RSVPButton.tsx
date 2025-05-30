@@ -19,7 +19,7 @@ export default function RSVPButton({ item }: { item: EventType }) {
         <TouchableOpacity
           onPress={() => {
             Alert.alert('Please log in to RSVP');
-            router.push('/login');
+            router.replace('/login');
           }}
         >
           <View style={{ ...styles.button, backgroundColor: theme.colors.primary }}>

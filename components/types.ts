@@ -41,6 +41,7 @@ export type EventType = {
   attendees: string[]; // List of user IDs
   dateTime: Date; // Date and time of the event
   location: string; // Location of the event
+  hostId: string;
   comments: string[]; // List of comment IDs
 };
 
@@ -56,6 +57,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'CoDa B45',
+    hostId: '',
     comments: [],
   },
   {
@@ -67,6 +69,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'Old Union',
+    hostId: '',
     comments: [],
   },
   {
@@ -78,6 +81,7 @@ export const sampleEvents: EventType[] = [
     attendees: [] as string[],
     dateTime: dummyDate,
     location: 'CoDa E160',
+    hostId: '',
     comments: [],
   },
 ];

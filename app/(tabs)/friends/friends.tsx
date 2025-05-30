@@ -21,7 +21,7 @@ export default function FriendsScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Friends</ThemedText>
       </ThemedView>
-      <ThemedText>See what your friends are up to.</ThemedText>
+      <ThemedText>See your friends top 3 upcoming events:</ThemedText>
       <FriendList />
     </ParallaxScrollView>
   );

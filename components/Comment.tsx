@@ -1,53 +1,115 @@
-// components/Comment.tsx
-import { formatDistanceToNow } from "date-fns";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import theme from "../assets/theme";
-import { Comment } from "./types";
+import theme from '@/assets/theme';
+import { addComment, fetchComments } from '@/database/commentHooks';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import CommentItem from './CommentItem';
+import { ThemedText } from './ThemedText';
+import { Comment } from './types';
+import { getUserId } from '@/database/authHooks';
 
-export default function CommentItem({ comment }: { comment: Comment }) {
-  const timeAgo = formatDistanceToNow(comment.timestamp, { addSuffix: true });
+type CommentsProps = {
+  eventID: string; // Accept eventID as a prop
+};
+
+export default function Comments({ eventID }: CommentsProps) {
+  // Check if user is logged in
+  const userId = getUserId(); // Get the current user's ID
+  if (!userId) {
+    return (
+      <View style={styles.commentSection}>
+        <ThemedText style={styles.caption}>Please log in to view and post comments.</ThemedText>
+      </View>
+    );
+  }
+  const [eventComments, setEventComments] = useState<Comment[]>([]); // Manage comments state
+  const [newComment, setNewComment] = useState<string>(''); // Manage new comment input
+
+  // Fetch comments for the event when the component mounts
+  useEffect(() => {
+    const loadComments = async () => {
+      if (eventID) {
+        const comments = await fetchComments(eventID); // Fetch comments from Firestore using eventID
+        setEventComments(comments);
+      }
+    };
+    loadComments();
+  }, [eventID]); // Depend on eventID
+
+  // Handle comment submission
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return; // Don't submit empty comments
+
+    const userId = 'currentUserId'; // Replace with actual user ID logic
+
+    // Add comment to Firestore (you may need to implement addComment if it's not already in place)
+    const success = await addComment(userId, eventID, newComment);
+
+    if (success) {
+      // Refresh comments after adding the new comment
+      const updatedComments = await fetchComments(eventID);
+      setEventComments(updatedComments);
+      setNewComment(''); // Clear the comment input field
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../assets/images/Placeholder_User.png")}
-        style={styles.avatar}
+    <View style={styles.commentSection}>
+      <ThemedText style={styles.title}>Comments</ThemedText>
+      {eventComments.length === 0 ? (
+        <ThemedText style={styles.caption}>No comments yet.</ThemedText>
+      ) : (
+        eventComments.map((comment) => <CommentItem comment={comment} key={comment.id} />)
+      )}
+
+      <TextInput
+        style={styles.commentInput}
+        placeholder="Add a comment..."
+        value={newComment}
+        onChangeText={setNewComment}
       />
-      <View style={styles.textContainer}>
-        <View style={styles.header}>
-          <Text style={theme.typography.subtitle}>{comment.userId}</Text>
-          <Text style={styles.timestamp}>{timeAgo}</Text>
-        </View>
-        <Text style={theme.typography.body}>{comment.content}</Text>
-      </View>
+
+      <TouchableOpacity onPress={handleCommentSubmit} style={styles.commentButton}>
+        <Text style={styles.commentButtonText}>Post Comment</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
+  commentSection: {
+    marginTop: 24,
     gap: 12,
-    marginBottom: 16,
-    alignItems: "flex-start",
   },
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#ccc",
+  commentInput: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginBottom: 10,
+    color: '#444',
   },
-  textContainer: {
-    flex: 1,
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 4,
+  caption: {
+    fontSize: 14,
+    color: '#888',
   },
-  timestamp: {
-    fontSize: 12,
-    color: "#666",
+  commentButton: {
+    backgroundColor: theme.colors.primary, // Primary color for the button
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%', // Full width to match the input field
+    marginTop: 8,
+  },
+  commentButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

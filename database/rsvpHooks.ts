@@ -1,14 +1,14 @@
+import { EventType } from '@/components/types';
+import { db } from '@/firebaseConfig';
 import {
+  arrayRemove,
+  arrayUnion,
   doc,
+  DocumentReference,
   getDoc,
   updateDoc,
-  arrayUnion,
-  arrayRemove,
-  DocumentReference,
 } from 'firebase/firestore';
-import { db } from '@/firebaseConfig';
 import { isDocumentReferenceInList } from './helpers';
-import { EventType } from '@/components/types';
 
 //isRSVPed
 export async function isRSVPed(userId: string, eventId: string): Promise<boolean> {
@@ -124,7 +124,7 @@ export async function getRsvps(userId: string): Promise<EventType[]> {
           return {
             id: eventDoc.id,
             hostName: eventData.hostName,
-            hostImage: eventData.hostFlyer,
+            hostImage: eventData.hostImage,
             eventTitle: eventData.eventTitle,
             hostFlyer: eventData.hostFlyer,
             location: eventData.location,

@@ -1,11 +1,10 @@
 // app/(tabs)/events/[id].tsx
-import { mockEvents } from '@/assets/data/mockEvents';
 import EventPage from '@/components/EventPage';
-import { useLocalSearchParams } from 'expo-router';
-import { Text, View, ActivityIndicator } from 'react-native';
-import { getEvent } from '@/database/eventHooks';
-import { useEffect, useState } from 'react';
 import { EventType } from '@/components/types';
+import { getEvent } from '@/database/eventHooks';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 export const options = {
   href: null,

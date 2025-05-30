@@ -17,8 +17,7 @@ export default function LoginPage() {
       const user = await signIn(email, password);
       if (user) router.replace('/(tabs)/feed/feed');
     } catch (error) {
-      console.error('Login error:', error);
-      alert('Login failed. Please check your credentials.');
+      alert(`Login failed due to: ${error.message}`);
     }
   };
 
@@ -43,8 +42,11 @@ export default function LoginPage() {
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/signup')}>
-        <Text style={styles.link}>Don't have an account? Sign up</Text>
+      <TouchableOpacity onPress={() => router.replace('/signup')}>
+        <Text style={styles.link}>Don't have student account? Sign up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.replace('/clubsignup')}>
+        <Text style={styles.link}>Don't have club account? Sign up</Text>
       </TouchableOpacity>
     </View>
   );

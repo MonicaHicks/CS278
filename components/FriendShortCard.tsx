@@ -21,7 +21,7 @@ export default function FriendShortCard({
       <TouchableOpacity
         onPress={() => {
           console.log('Friend card pressed');
-          router.push('/(tabs)/profile');
+          router.push(`/profile/${friendInfo.id}`);
         }}
       >
         <View style={theme.profilePicNameContainer}>
