@@ -23,6 +23,18 @@ export async function getUser(userId: string): Promise<User | null> {
   return null; // User does not exist
 }
 
+// getUserIsClub
+export const getUserIsClub = async (userId: string): Promise<boolean | undefined> => {
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    return userData.isClub || false; // Return false if isClub is not defined
+  } else {
+    console.warn(`No user found with ID: ${userId}`);
+  }
+};
+
 export const getUserImage = async (userId: string): Promise<string> => {
   try {
     const userRef = doc(db, 'users', userId);

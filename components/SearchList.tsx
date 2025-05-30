@@ -1,43 +1,56 @@
 import { ThemedView } from './ThemedView';
+import { ThemedText } from './ThemedText';
 import FriendShortCard from './FriendShortCard';
+import { useEffect, useState } from 'react';
+import { fetchResults } from '@/database/searchHooks';
+import { Friend } from './types';
+import { ActivityIndicator } from 'react-native';
 
-const FRIENDS = [
-  {
-    id: '1',
-    name: 'Shannon K.',
-    image: '',
-    eventsAttending: ['baseball', 'coffee', 'tech free night'],
-  },
-  {
-    id: '2',
-    name: 'Holly J.',
-    image: '',
-    eventsAttending: ['food fight', 'fencing'],
-  },
-  {
-    id: '3',
-    name: 'Andrew K.',
-    image: '',
-    eventsAttending: ['leather making', 'yoga', 'mario kart tournament'],
-  },
-  {
-    id: '4',
-    name: 'Tina A.',
-    image: '',
-    eventsAttending: ['mv watch party', 'champions league watch party', 'tech coffee night'],
-  },
-  {
-    id: '5',
-    name: 'Akaash M.',
-    image: '',
-    eventsAttending: ['sf tour', 'mario kart tournament'],
-  },
-];
+type SearchListProps = {
+  query: string;
+  field: 'name' | 'displayName'; // Optional field to search by
+};
 
-export default function SearchList() {
+export default function SearchList({ query, field }: SearchListProps) {
+  const [results, setResults] = useState<Friend[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (query.length == 0) {
+      setResults([]);
+      return;
+    }
+    setLoading(true);
+    fetchResults(query, field)
+      .then((data) => {
+        setResults(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching search results:', error);
+        setLoading(false);
+      });
+  }, [query]);
+
+  if (loading) {
+    return (
+      <ThemedView>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </ThemedView>
+    );
+  }
+
+  if (results.length === 0) {
+    return (
+      <ThemedView>
+        <ThemedText>No results found</ThemedText>
+      </ThemedView>
+    );
+  }
+
   return (
     <ThemedView>
-      {FRIENDS.map((friend) => (
+      {results.map((friend) => (
         <FriendShortCard friendInfo={friend} key={friend.id} />
       ))}
     </ThemedView>
