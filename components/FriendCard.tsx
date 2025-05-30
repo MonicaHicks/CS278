@@ -53,7 +53,7 @@ function EventList({ eventsAttending }: { eventsAttending: EventType[] }) {
           key={event.id}
           onPress={() => {
             console.log('Event pressed');
-            router.push(`/events/${event.id}`);
+            router.push(`/event/${event.id}`);
           }}
         >
           <ThemedView

@@ -75,7 +75,7 @@ export default function EventModal({
               onPress={() => {
                 onClose();
                 setTimeout(() => {
-                  router.push(`/events/${item.id}`);
+                  router.push(`/event/${item.id}`);
                 }, 200);
               }}
             >

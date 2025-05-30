@@ -7,6 +7,8 @@ import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
 import { EventType } from './types';
 import { useRouter } from 'expo-router';
+import ProfileAndSearchButtons from './ProfileAndSearchButtons'; // Ensure this is the correct import path
+import BackButton from './BackButton';
 
 export default function EventPage({ item }: { item: EventType }) {
   const router = useRouter();
@@ -27,12 +29,18 @@ export default function EventPage({ item }: { item: EventType }) {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#FDF8F3', dark: '#1D3D47' }}
       headerImage={
-        <Image
-          source={
-            item.hostFlyer ? { uri: item.hostFlyer } : require('../assets/images/Sample_Flyer.png')
-          }
-          style={styles.flyer}
-        />
+        <View style={styles.headerWrapper}>
+          <Image
+            source={
+              item.hostFlyer
+                ? { uri: item.hostFlyer }
+                : require('../assets/images/Sample_Flyer.png')
+            }
+            style={styles.flyer}
+          />
+          <BackButton />
+          <ProfileAndSearchButtons />
+        </View>
       }
     >
       <View style={styles.content}>
@@ -89,5 +97,10 @@ const styles = StyleSheet.create({
   details: {
     alignItems: 'center',
     gap: 6,
+  },
+  headerWrapper: {
+    height: 250,
+    width: '100%',
+    position: 'relative',
   },
 });
