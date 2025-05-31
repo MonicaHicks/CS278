@@ -1,5 +1,6 @@
 import theme from '@/assets/theme';
 import { getEvent } from '@/database/eventHooks';
+import { handleRSVP } from '@/database/rsvpHooks';
 import { getUser } from '@/database/userHooks';
 import { db } from '@/firebaseConfig';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
@@ -25,6 +26,7 @@ export default function InviteInboxModal({
     await updateDoc(eventRef, {
       attendees: arrayUnion(userId),
     });
+    await handleRSVP(userId, invite.eventId);
 
     if (onRespond) onRespond();
   };
