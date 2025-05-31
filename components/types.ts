@@ -21,6 +21,14 @@ export type Club = {
   description: string; // Description of the club
 };
 
+export type Invite = {
+  eventId: string;
+  senderId: string;
+  recipientId: string;
+  status: 'pending' | 'accepted' | 'declined';
+  sentAt: Date;
+};
+
 export const sampleUser: User = {
   id: '1',
   name: 'Shannon K.',
