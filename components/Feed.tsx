@@ -1,7 +1,6 @@
-// components/Feed.tsx
-import { fetchEvents } from '@/database/eventHooks';
-import { getRsvps } from '@/database/rsvpHooks';
-import React, { useEffect, useState } from 'react';
+import { db } from '@/firebaseConfig';
+import { collection, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import EventComponent from './Event';
@@ -9,7 +8,6 @@ import { EventType } from './types';
 
 type FeedProps = {
   filter: 'upcoming' | 'past';
-  // If userId us provided, only render that user's events
   userId?: string;
 };
 
@@ -18,22 +16,37 @@ export default function Feed({ filter, userId }: FeedProps) {
   const now = new Date();
 
   useEffect(() => {
-    const load = async () => {
-      // Should add props depending on if this is the user's feed or a public feed
-      let allEvents = null;
-      if (userId) {
-        allEvents = await getRsvps(userId);
-      } else {
-        allEvents = await fetchEvents();
-      }
-      // const allEvents = await fetchEvents();
-      const filtered = allEvents.filter((event) =>
-        filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now,
+    let q;
+
+    if (userId) {
+      // Only show events where this user is in attendees
+      q = query(
+        collection(db, 'events'),
+        where('attendees', 'array-contains', userId),
+        orderBy('dateTime', 'asc'),
       );
-      setEvents(filtered);
-    };
-    load();
-  }, [filter]);
+    } else {
+      // Show all public events
+      q = query(collection(db, 'events'), orderBy('dateTime', 'asc'));
+    }
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const list = snapshot.docs
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            ...(data as Omit<EventType, 'id' | 'dateTime'>),
+            id: doc.id,
+            dateTime: (data.dateTime as Timestamp).toDate(),
+          };
+        })
+        .filter((event) => (filter === 'upcoming' ? event.dateTime >= now : event.dateTime < now));
+
+      setEvents(list as EventType[]);
+    });
+
+    return () => unsubscribe();
+  }, [filter, userId]);
 
   return (
     <SafeAreaProvider>

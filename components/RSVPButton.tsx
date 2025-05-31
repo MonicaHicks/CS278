@@ -1,12 +1,11 @@
-import React from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { getUserId } from '@/database/authHooks';
+import { handleRSVP, handleUnRSVP, isRSVPed } from '@/database/rsvpHooks';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import theme from '../assets/theme';
 import { ThemedText } from './ThemedText';
-import { getUserId } from '@/database/authHooks';
 import { EventType } from './types';
-import { isRSVPed, handleRSVP, handleUnRSVP } from '@/database/rsvpHooks';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
 
 export default function RSVPButton({ item }: { item: EventType }) {
   const userId = getUserId();

@@ -18,6 +18,7 @@ export default function TabLayout() {
   useEffect(() => {
     const fetchUser = async () => {
       const userId = await getUserId();
+      if (!userId) return;
       const user = await getUser(userId);
       if (user) setIsHost(user?.isClub);
     };

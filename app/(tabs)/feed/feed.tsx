@@ -1,4 +1,3 @@
-import EventCreationButton from '@/components/CreateEventButton';
 import Feed from '@/components/Feed';
 import GlobalHeaderImage from '@/components/GlobalHeaderImage';
 import { HelloWave } from '@/components/HelloWave';
@@ -28,7 +27,6 @@ export default function HomeScreen() {
       <ThemedView style={styles.feed}>
         <Feed filter="upcoming" />
       </ThemedView>
-      <EventCreationButton />
     </ParallaxScrollView>
   );
 }

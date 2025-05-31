@@ -75,7 +75,9 @@ export default function EventComponent({ item }: { item: EventType }) {
             </ThemedText>
           </View>
           {isHost && (
-            <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: 5 }}
+            >
               <TouchableOpacity
                 style={{
                   backgroundColor: theme.colors.primary,
@@ -89,7 +91,7 @@ export default function EventComponent({ item }: { item: EventType }) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#999', // or use theme.colors.secondary if you have one
+                  backgroundColor: '#999',
                   paddingVertical: 8,
                   paddingHorizontal: 16,
                   borderRadius: 8,
