@@ -1,6 +1,6 @@
-import { Friend } from '@/components/types';
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { Friend, User } from '@/components/types';
 import { db } from '@/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 import { getRsvps } from './rsvpHooks';
 
 // Fetch all friends for a user
@@ -18,7 +18,7 @@ export async function fetchFriends(userId: string): Promise<Friend[]> {
     for (const followingRef of followingRefs) {
       const followingDoc = await getDoc(followingRef);
       if (followingDoc.exists()) {
-        const friendData = followingDoc.data(); // type: User
+        const friendData: User = followingDoc.data() as User; // type: User
 
         // Get the events for this friend
         const friendEvents = await getRsvps(followingDoc.id);

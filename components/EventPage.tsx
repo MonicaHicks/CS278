@@ -1,17 +1,20 @@
+import { auth } from '@/firebaseConfig';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import theme from '../assets/theme';
-import Comments from './Comment'; // Ensure the correct component is imported (Comment vs Comments)
+import BackButton from './BackButton';
+import Comments from './Comment'; // Ensure the correct component is imported
+import InviteButton from './InviteButton';
 import ParallaxScrollView from './ParallaxScrollView';
+import ProfileAndSearchButtons from './ProfileAndSearchButtons';
 import RSVPButton from './RSVPButton';
 import { ThemedText } from './ThemedText';
 import { EventType } from './types';
-import { useRouter } from 'expo-router';
-import ProfileAndSearchButtons from './ProfileAndSearchButtons'; // Ensure this is the correct import path
-import BackButton from './BackButton';
 
 export default function EventPage({ item }: { item: EventType }) {
   const router = useRouter();
+  const user = auth.currentUser; // get current user from context
   const formattedDate = item.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
@@ -72,7 +75,8 @@ export default function EventPage({ item }: { item: EventType }) {
 
         <RSVPButton item={item} />
 
-        {/* Pass eventComments to the Comments component */}
+        {user?.uid && <InviteButton userId={user.uid} eventId={eventID} />}
+
         <Comments eventID={eventID} />
       </View>
     </ParallaxScrollView>
