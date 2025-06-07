@@ -1,20 +1,34 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 import { initializeApp } from 'firebase/app';
 import { getReactNativePersistence, initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { Platform } from 'react-native';
 
+const {
+  firebaseApiKey,
+  firebaseAuthDomain,
+  firebaseProjectId,
+  firebaseStorageBucket,
+  firebaseMessageSenderId,
+  firebaseAppId,
+  firebaseMeasurementId,
+  firebaseDatabaseUrl,
+} = Constants.expoConfig?.extra ?? {};
+
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.DATABASE_URL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGE_SENDER_ID,
-  appId: process.env.APP_ID,
-  measurementId: process.env.MEASUREMENT_ID,
+  apiKey: firebaseApiKey,
+  authDomain: firebaseAuthDomain,
+  databaseURL: firebaseDatabaseUrl,
+  projectId: firebaseProjectId,
+  storageBucket: firebaseStorageBucket,
+  messagingSenderId: firebaseMessageSenderId,
+  appId: firebaseAppId,
+  measurementId: firebaseMeasurementId,
 };
+
+console.log('Firebase Config', firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
 // Don't do auth persistence on web
