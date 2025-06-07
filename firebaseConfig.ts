@@ -6,14 +6,14 @@ import { getStorage } from 'firebase/storage';
 import { Platform } from 'react-native';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBjI6guDe-XWCjvUYIPFYz1Aa3ZKxdduG4',
-  authDomain: 'cs278-29576.firebaseapp.com',
-  databaseURL: 'https://cs278-29576-default-rtdb.firebaseio.com',
-  projectId: 'cs278-29576',
-  storageBucket: 'cs278-29576.firebasestorage.app',
-  messagingSenderId: '467508675893',
-  appId: '1:467508675893:web:5b183b7334e7b2d7ec387c',
-  measurementId: 'G-S2RVM5MPWF',
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
